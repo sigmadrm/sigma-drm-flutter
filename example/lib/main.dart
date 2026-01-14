@@ -13,10 +13,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sigma Player Demo',
-      home: HomePage(),
+      builder: (context, child) {
+        return SigmaFPM.instance.buildOverlay(child: child ?? const SizedBox());
+      },
+      home: const MyApp(),
     );
   }
 }
@@ -34,15 +37,15 @@ class VideoConfig {
   });
 }
 
-/// Home page
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+/// My app
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MyAppState extends State<MyApp> {
   VideoPlayerController? _videoController;
 
   int _playerKey = 0;
@@ -217,34 +220,32 @@ class _HomePageState extends State<HomePage> {
   // Need to wrap SigmaFPM around child in Widget build(BuildContext context) {
   @override
   Widget build(BuildContext context) {
-    return SigmaFPM.instance.buildOverlay(
-      child: Scaffold(
-        body: Column(
-          children: [
-            const SizedBox(height: 32),
-            Expanded(child: Center(child: _buildPlayer())),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _togglePlayPause,
-                  child: Icon(
-                    (_videoController?.value.isPlaying ?? false)
-                        ? Icons.pause
-                        : Icons.play_arrow,
-                  ),
+    return Scaffold(
+      body: Column(
+        children: [
+          const SizedBox(height: 32),
+          Expanded(child: Center(child: _buildPlayer())),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: _togglePlayPause,
+                child: Icon(
+                  (_videoController?.value.isPlaying ?? false)
+                      ? Icons.pause
+                      : Icons.play_arrow,
                 ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: _changeVideo,
-                  child: const Icon(Icons.skip_next),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: _changeVideo,
+                child: const Icon(Icons.skip_next),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }

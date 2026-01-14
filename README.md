@@ -96,13 +96,19 @@ SigmaFPM.instance.start();
 
 ### 3️⃣ Wrap Application UI with Overlay
 
-Wrap your entire application UI using `buildOverlay` to enable Fingerprint and Message overlays.
+To ensure Fingerprint and Message overlays persist correctly (especially in **fullscreen mode**), you should wrap your `MaterialApp` using the `builder` property. This places the overlay above the Navigator.
 
 ```dart
 @override
 Widget build(BuildContext context) {
-  return SigmaFPM.instance.buildOverlay(
-    child: const MyAppUI(),
+  return MaterialApp(
+    // ... other properties
+    builder: (context, child) {
+      return SigmaFPM.instance.buildOverlay(
+        child: child ?? const SizedBox(),
+      );
+    },
+    home: const MyApp(),
   );
 }
 ```
