@@ -1,2 +1,182 @@
 # sigma-drm-flutter
-This is a Flutter plugin for integrating Sigma-DRM.
+
+`sigma-drm-flutter` is a **high-performance Flutter plugin** for integrating **SigmaDRM** into Flutter applications.  
+It enables secure DRM video playback with **automated Fingerprint and Message overlays**, optimized for **Android Mobile** and **Android TV** platforms.
+
+The plugin is built on top of Flutter’s `video_player` and is designed for **OTT / IPTV / Streaming** applications.
+
+---
+
+## ✨ Features
+
+- 🔐 **SigmaDRM Integration**  
+  Secure DRM protection for video content using SigmaDRM.
+
+- 🖼 **Fingerprint & Message Overlay (FPM)**  
+  Built-in support for:
+
+  - Overt Fingerprint
+  - Forensic Fingerprint
+  - Message Overlay  
+    via the `sigma_fingerprint_message` module.
+
+- 🎛 **Customizable Video Controls**  
+  Integrated with `video_player_control_panel` for flexible UI customization.
+
+- 🚀 **High Performance**  
+  Optimized for large-scale streaming apps and Android TV devices.
+
+---
+
+## 📦 Installation
+
+Add `sigma_video_player` to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  sigma_video_player:
+    git:
+      url: https://github.com/sigmadrm/sigma-drm-flutter.git
+      ref: v1.0.0 # Replace with the latest version
+```
+
+Install dependencies:
+
+```bash
+flutter pub get
+```
+
+---
+
+## 📱 Platform Support
+
+| Platform       | Status                          |
+| -------------- | ------------------------------- |
+| Android Mobile | ✅ Supported                    |
+| Android Tablet | ✅ Supported                    |
+| Android TV     | ✅ Supported (TV Box, Smart TV) |
+
+---
+
+## 🚀 Usage Guide
+
+### 1️⃣ Initialize SigmaVideoPlayer
+
+The plugin **must be initialized before running the application**.
+
+```dart
+import 'package:flutter/widgets.dart';
+import 'package:sigma_video_player/sigma_video_player.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SigmaVideoPlayer.init();
+
+  runApp(const MyApp());
+}
+```
+
+---
+
+### 2️⃣ Configure Fingerprint & Message (FPM)
+
+Configure the global Fingerprint & Message module.
+
+```dart
+SigmaFPM.instance.setConfig(
+  accessToken: 'YOUR_JWT_ACCESS_TOKEN',
+);
+
+// Start fetching configuration from SigmaDRM API
+SigmaFPM.instance.start();
+```
+
+---
+
+### 3️⃣ Wrap Application UI with Overlay
+
+Wrap your entire application UI using `buildOverlay` to enable Fingerprint and Message overlays.
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return SigmaFPM.instance.buildOverlay(
+    child: const MyAppUI(),
+  );
+}
+```
+
+---
+
+### 4️⃣ DRM Video Playback
+
+Create a `VideoPlayerController` with DRM configuration.
+
+```dart
+final controller = VideoPlayerController.networkUrl(
+  Uri.parse('https://your-stream-url.mpd'),
+  drmConfiguration: {
+    'merchantId': 'YOUR_MERCHANT_ID',
+    'appId': 'YOUR_APP_ID',
+    'userId': 'YOUR_USER_ID',
+    'sessionId': 'YOUR_SESSION_ID',
+  },
+);
+
+await controller.initialize();
+controller.play();
+```
+
+---
+
+### 5️⃣ Update Channel ID When Switching Content
+
+```dart
+SigmaFPM.instance.setChannelId('YOUR_CHANNEL_ID');
+```
+
+---
+
+### 6️⃣ Update Access Token Dynamically
+
+If your application refreshes the authentication token during a session, you can update it without restarting the module.
+
+```dart
+SigmaFPM.instance.setAccessToken('YOUR_JWT_ACCESS_TOKEN');
+```
+
+---
+
+## 🔧 Configuration Parameters
+
+| Placeholder             | Description                                           |
+| ----------------------- | ----------------------------------------------------- |
+| `YOUR_JWT_ACCESS_TOKEN` | JWT token used to authenticate the user with SigmaDRM |
+| `YOUR_MERCHANT_ID`      | Merchant ID provided by SigmaDRM                      |
+| `YOUR_APP_ID`           | Application ID provided by SigmaDRM                   |
+| `YOUR_USER_ID`          | Current user identifier                               |
+| `YOUR_SESSION_ID`       | Session ID for SigmaDRM license authentication        |
+| `YOUR_CHANNEL_ID`       | Identifier of the current channel or content          |
+
+---
+
+## ▶️ Run the Example Application
+
+```bash
+cd example
+flutter pub get
+flutter run
+```
+
+---
+
+## 🤝 Contributing
+
+Issues and pull requests are welcome.
+
+---
+
+## 📚 Reference
+
+- [video_player](https://pub.dev/packages/video_player): Official Flutter plugin for cross-platform video playback, used as the base player in this project.
