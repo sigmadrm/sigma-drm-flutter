@@ -16,14 +16,13 @@ class MessageOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool useRtlText = false;
-
     String rawMessage = settings.outputType == MessageOutputType.FORCE_FP
-        ? "[$deviceId] ${settings.body}"
-        : settings.body;
+        ? "[$deviceId][${settings.body}]"
+        : "[${settings.body}]";
     // Calculate text height based on fontSize and lineHeight
     final double lineHeight = 1.5;
     final double fontSize = settings.fontSize.toDouble();
-    final double textHeight = settings.fontSize.toDouble() * lineHeight;
+    final double textHeight = fontSize * lineHeight;
     final textStyle = TextStyle(
       color: parseColor(settings.textColor),
       fontSize: fontSize,

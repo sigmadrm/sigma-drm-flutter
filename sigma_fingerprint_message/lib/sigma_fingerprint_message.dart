@@ -16,8 +16,7 @@ class SigmaFPM {
   String? _channelId;
 
   Map<String, dynamic> _config = {
-    // 'apiBaseUrl': 'https://develop-api-drm-cms-e2e.sigmadrm.com',
-    'apiBaseUrl': 'https://audit-drm-api-dev.sigmadrm.com',
+    'apiBaseUrl': 'https://develop-api-drm-cms-e2e.sigmadrm.com',
     'accessToken': '',
     'refreshInterval': 30,
   };

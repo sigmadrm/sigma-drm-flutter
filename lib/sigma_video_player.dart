@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:sigma_fingerprint_message/sigma_fingerprint_message.dart';
 
 export 'package:video_player/video_player.dart';
-export 'package:video_player_control_panel/video_player_control_panel.dart';
 export 'package:sigma_fingerprint_message/sigma_fingerprint_message.dart';
+export 'package:video_player_control_panel/video_player_control_panel.dart';
+export 'package:chewie/chewie.dart';
 
 class SigmaVideoPlayer {
   static const MethodChannel _channel = MethodChannel('sigma_video_player');

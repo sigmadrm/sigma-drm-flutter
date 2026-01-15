@@ -20,6 +20,8 @@ dependencies:
     path: video_player_control_panel
   sigma_fingerprint_message:
     path: sigma_fingerprint_message
+  chewie:
+    path: chewie
 
 dev_dependencies:
   flutter_test:

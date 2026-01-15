@@ -12,16 +12,10 @@ The plugin is built on top of Flutter’s `video_player` and is designed for **O
 - 🔐 **SigmaDRM Integration**  
   Secure DRM protection for video content using SigmaDRM.
 
-- 🖼 **Fingerprint & Message Overlay (FPM)**  
-  Built-in support for:
-
-  - Overt Fingerprint
-  - Forensic Fingerprint
-  - Message Overlay  
-    via the `sigma_fingerprint_message` module.
+- 🖼 **Fingerprint & Message Overlay (FPM)**
 
 - 🎛 **Customizable Video Controls**  
-  Integrated with `video_player_control_panel` for flexible UI customization.
+  Integrated with `video_player_control_panel` for flexible UI customization, or use `chewie` for Material and Cupertino-styled video controls.
 
 - 🚀 **High Performance**  
   Optimized for large-scale streaming apps and Android TV devices.
@@ -177,12 +171,8 @@ flutter run
 
 ---
 
-## 🤝 Contributing
-
-Issues and pull requests are welcome.
-
----
-
 ## 📚 Reference
 
 - [video_player](https://pub.dev/packages/video_player): Official Flutter plugin for cross-platform video playback, used as the base player in this project.
+- [chewie](https://pub.dev/packages/chewie): A video player for Flutter with Material and Cupertino skins, providing customizable UI controls for video playback.
+- [video_player_control_panel](https://pub.dev/packages/video_player_control_panel): A flexible and customizable control panel for Flutter video players, offering granular control over UI elements.
