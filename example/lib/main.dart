@@ -52,17 +52,17 @@ class _MyAppState extends State<MyApp> {
 
   /// Playlist
   final List<VideoConfig> _playlist = [
-    VideoConfig(
-      channelId: "123",
-      url:
-          "https://sdrm-test.gviet.vn:9080/static/vod_production/big_bug_bunny/manifest.mpd",
-      drmConfiguration: {
-        'merchantId': 'sigma_packager_lite',
-        'appId': 'demo',
-        'userId': 'user id',
-        'sessionId': 'session id',
-      },
-    ),
+    // VideoConfig(
+    //   channelId: "123",
+    //   url:
+    //       "https://sdrm-test.gviet.vn:9080/static/vod_production/big_bug_bunny/manifest.mpd",
+    //   drmConfiguration: {
+    //     'merchantId': 'sigma_packager_lite',
+    //     'appId': 'demo',
+    //     'userId': 'user id',
+    //     'sessionId': 'session id',
+    //   },
+    // ),
     VideoConfig(
       channelId: "4567",
       url:
@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
         'appId': 'VTVcabON',
         'userId': 'G-R3VFD7QTQD',
         'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg0NDU3ODUsImV4cCI6MTc2ODQ2OTE4NX0.kba0PyFy6OdZ_QyZgFFSwmk_ygkhM3Nn5vtDyINGFso',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg1Mjg2OTksImV4cCI6MTc2ODU1MjA5OX0.g_E0jl14D6ZkH6OFTiC_Xfrt9T32o-InZyXZ0YUy4yQ',
       },
     ),
     const VideoConfig(

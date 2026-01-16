@@ -155,7 +155,6 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
       color: style.displayBackground
           ? parseColor(style.bgColor)
           : Colors.transparent,
-      borderRadius: BorderRadius.circular(4),
     );
 
     return LayoutBuilder(
