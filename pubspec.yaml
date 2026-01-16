@@ -22,6 +22,8 @@ dependencies:
     path: packages/sigma_fingerprint_message
   chewie:
     path: packages/chewie
+  wakelock_plus:
+    path: packages/wakelock_plus/wakelock_plus
 
 dev_dependencies:
   flutter_test:
