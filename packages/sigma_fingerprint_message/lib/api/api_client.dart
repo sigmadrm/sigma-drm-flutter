@@ -31,38 +31,39 @@ class ApiClient {
         headers: headers,
       );
 
-      // FIXME: fake response
-      MessageSettings messageSettings = MessageSettings(
-        bgColor: '#00FFFF',
-        body: 'Hello, message! ${DateTime.now().toString().hashCode}',
-        duration: 3,
-        fontSize: 48,
-        id: '1234567890',
-        outputType: MessageOutputType.FORCE_FP,
-        textColor: '#000000',
-      );
-      FingerprintSettings fingerprintSettings = FingerprintSettings(
-        displayAt: FPDisplayAtType.AT_POSITION,
-        displayMAC: false,
-        duration: 3,
-        interval: 3,
-        message: 'Hello, fingerprint! ${DateTime.now().toString().hashCode}',
-        opacity: 0.8,
-        outputType: FPOutputType.OVERT,
-        refreshInterval: 30,
-        repeat: 0,
-        settings: FingerprintStyleSettings(
-          bgColor: '#FFFFFF',
-          displayBackground: false,
-          fontSize: 14,
-          px: 10,
-          py: 10,
-          textColor: '#000000',
-        ),
-      );
+      // // FIXME: fake response
+      // MessageSettings messageSettings = MessageSettings(
+      //   bgColor: '#00FFFF',
+      //   body: 'Hello, message! ${DateTime.now().toString().hashCode}',
+      //   duration: 3,
+      //   fontSize: 48,
+      //   id: '1234567890',
+      //   outputType: MessageOutputType.FORCE_FP,
+      //   textColor: '#000000',
+      // );
+      // FingerprintSettings fingerprintSettings = FingerprintSettings(
+      //   displayAt: FPDisplayAtType.AT_POSITION,
+      //   displayMAC: false,
+      //   duration: 3,
+      //   interval: 3,
+      //   message: 'Hello, fingerprint! ${DateTime.now().toString().hashCode}',
+      //   opacity: 0.8,
+      //   outputType: FPOutputType.OVERT,
+      //   displayType: FPDisplayType.GLOBAL,
+      //   refreshInterval: 30,
+      //   repeat: 0,
+      //   settings: FingerprintStyleSettings(
+      //     bgColor: '#FFFFFF',
+      //     displayBackground: false,
+      //     fontSize: 14,
+      //     px: 10,
+      //     py: 10,
+      //     textColor: '#000000',
+      //   ),
+      // );
 
       return FPMSettingsResponse(
-        fingerprintSettings: .fromJson(data?["fingerprint"]),
+        fingerprintSettings: FingerprintSettings.fromJson(data?["fingerprint"]),
         messageSettings: MessageSettings.fromJson(data?["message"]),
       );
     } catch (e) {

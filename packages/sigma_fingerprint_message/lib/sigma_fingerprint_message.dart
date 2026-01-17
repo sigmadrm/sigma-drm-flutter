@@ -22,8 +22,8 @@ class SigmaFPM {
   };
 
   Timer? _refreshTimer;
-  FingerprintSettings? _lastValidFingerprint;
-  MessageSettings? _lastValidMessage;
+  FingerprintSettings? _lastFingerprint;
+  MessageSettings? _lastMessage;
 
   // ================================
   // 3️⃣ NOTIFIERS (UI binding)
@@ -63,7 +63,12 @@ class SigmaFPM {
   void setChannelId(String channelId) {
     if (_channelId == channelId) return;
     _channelId = channelId;
-    _fetchFingerprintMessage();
+
+    if (fingerprintListenable.value?.displayType == FPDisplayType.INDIVIDUAL) {
+      fingerprintListenable.value = null;
+      _lastFingerprint = null;
+      _fetchFingerprintMessage();
+    }
   }
 
   void setAccessToken(String accessToken) {
@@ -91,8 +96,8 @@ class SigmaFPM {
     _refreshTimer = null;
     _started = false;
 
-    _lastValidFingerprint = null;
-    _lastValidMessage = null;
+    _lastFingerprint = null;
+    _lastMessage = null;
     fingerprintListenable.value = null;
     messageListenable.value = null;
   }
@@ -155,29 +160,23 @@ class SigmaFPM {
   void _updateFingerprintSetting(FingerprintSettings? settings) {
     if (settings == null) {
       fingerprintListenable.value = null;
-      return;
-    }
-
-    if (_lastValidFingerprint?.equals(settings) != true) {
-      _lastValidFingerprint = settings;
-      fingerprintListenable.value = settings;
+    } else if (_lastFingerprint?.equals(settings) != true) {
+      fingerprintListenable.value = settings; // re-render
 
       if (settings.refreshInterval != _config["refreshInterval"]) {
         _config["refreshInterval"] = settings.refreshInterval;
         _scheduleNextFetch();
       }
     }
+    _lastFingerprint = settings; // save value for next comparison
   }
 
   void _updateMessageSetting(MessageSettings? settings) {
     if (settings == null) {
       messageListenable.value = null;
-      return;
+    } else if (_lastMessage?.equals(settings) != true) {
+      messageListenable.value = settings; // re-render
     }
-
-    if (_lastValidMessage?.equals(settings) != true) {
-      _lastValidMessage = settings;
-      messageListenable.value = settings;
-    }
+    _lastMessage = settings; // save value for next comparison
   }
 }

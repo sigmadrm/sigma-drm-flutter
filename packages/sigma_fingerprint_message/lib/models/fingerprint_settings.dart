@@ -15,6 +15,22 @@ enum FPOutputType {
   }
 }
 
+enum FPDisplayType {
+  GLOBAL(0),
+  INDIVIDUAL(1),
+  GROUP(2);
+
+  final int value;
+  const FPDisplayType(this.value);
+
+  static FPDisplayType fromValue(int value) {
+    return FPDisplayType.values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => FPDisplayType.GLOBAL,
+    );
+  }
+}
+
 enum FPDisplayAtType {
   AT_AUTO(0),
   AT_POSITION(1);
@@ -38,6 +54,7 @@ class FingerprintSettings {
   final String message;
   final double opacity;
   final FPOutputType outputType;
+  final FPDisplayType displayType;
   final int refreshInterval;
   final int repeat;
   final FingerprintStyleSettings settings;
@@ -50,6 +67,7 @@ class FingerprintSettings {
     required this.message,
     required this.opacity, // [0, 1.0]
     required this.outputType,
+    required this.displayType,
     required this.refreshInterval,
     required this.repeat,
     required this.settings,
@@ -64,6 +82,7 @@ class FingerprintSettings {
         message == other.message &&
         opacity == other.opacity &&
         outputType == other.outputType &&
+        displayType == other.displayType &&
         refreshInterval == other.refreshInterval &&
         repeat == other.repeat &&
         settings.equals(other.settings);
@@ -82,6 +101,7 @@ class FingerprintSettings {
       message: json['message'] ?? '',
       opacity: (json['opacity']?.toDouble() ?? 0.0) / 100.0, // [0, 1.0]
       outputType: FPOutputType.fromValue(json['outputType'] ?? 0),
+      displayType: FPDisplayType.fromValue(json['displayType'] ?? 0),
       refreshInterval: json['refreshInterval'] ?? 30,
       settings: FingerprintStyleSettings.fromJson(
         json['settings'] ?? <String, dynamic>{},

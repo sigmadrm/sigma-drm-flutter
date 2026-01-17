@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:sigma_video_player/sigma_video_player.dart';
 
@@ -25,11 +26,13 @@ class App extends StatelessWidget {
 
 /// Video configuration model
 class VideoConfig {
+  final String title;
   final String url;
   final Map<String, String> drmConfiguration;
   final String channelId;
 
   const VideoConfig({
+    required this.title,
     required this.url,
     required this.channelId,
     this.drmConfiguration = const {},
@@ -49,24 +52,55 @@ class _MyAppState extends State<MyApp> {
   ChewieController? _chewieController;
 
   int _currentIndex = 0;
+  Key _playerKey = UniqueKey();
 
   /// Playlist
   final List<VideoConfig> _playlist = [
-    VideoConfig(
-      channelId: "4567",
-      url:
-          "https://live-on-akm.akamaized.net/manifest/vtv1/master.m3u8?manifestfilter=video_height%3A1-720",
-      drmConfiguration: {
-        'merchantId': 'thudojsc',
-        'appId': 'VTVcabON',
-        'userId': 'G-R3VFD7QTQD',
-        'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg1Mzg3MjQsImV4cCI6MTc2ODU2MjEyNH0.QwGmvw4UNvmKrdT8GrvEH_MnpElkV38cQ0f6dss6AZw',
-      },
-    ),
     const VideoConfig(
+      title: "Big bug bunny clear",
       channelId: "78980",
       url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    ),
+    // VideoConfig(
+    //   title: 'Big bug bunny - MultiDRM',
+    //   channelId: "001",
+    //   url:
+    //       "https://sdrm-test.gviet.vn:9080/static/vod_staging/the_box/manifest.mpd",
+    //   drmConfiguration: {
+    //     "licenseServerUrl":
+    //         "https://license-staging.sigmadrm.com/license/verify/widevine",
+    //     "merchantId": "sctv",
+    //     "appId": "RedTV",
+    //     "userId": "flutter user id",
+    //     "sessionId": "session id",
+    //   },
+    // ),
+    VideoConfig(
+      title: 'SANSAD_TV_HD',
+      channelId: "100",
+      url:
+          "http://live.ano.xcomcdn.com/manifest/SANSAD_TV_HD/masterSANSAD_TV_HD.m3u8",
+      drmConfiguration: {
+        'merchantId': 'anoplay',
+        'appId': 'anoplay_jwt',
+        'userId': 'SUWGD2FJTR',
+        'sessionId':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJTVVdHRDJGSlRSXCIsXCJtZXJjaGFudFwiOlwiYW5vcGxheVwiLFwiYXNzZXRcIjpcIlNBTlNBRF9UVl9IRFwiLFwibWFjSWRcIjpcIjk0MjZmZjc3YTNmOGY0NzdcIixcInN0b3JlTGljZW5zZVwiOmZhbHNlfSIsInVzZXJJZCI6IlNVV0dEMkZKVFIiLCJkcm1JZCI6IlNBTlNBRF9UVl9IRCIsImlhdCI6MTc2ODYxNTg4NSwiZXhwIjoxNzY4NjI2Njk1fQ.rXJMJeGB6orOpJJY7O3fGAEezhxMH_PiPQM-G8BmZ6c',
+      },
+    ),
+
+    VideoConfig(
+      title: 'INDIA_NEWS_UP',
+      channelId: "123",
+      url:
+          "http://live.ano.xcomcdn.com/manifest/INDIA_NEWS_UP/masterINDIA_NEWS_UP.m3u8",
+      drmConfiguration: {
+        'merchantId': 'anoplay',
+        'appId': 'anoplay_jwt',
+        'userId': 'SUWGD2FJTR',
+        'sessionId':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJTVVdHRDJGSlRSXCIsXCJtZXJjaGFudFwiOlwiYW5vcGxheVwiLFwiYXNzZXRcIjpcIklORElBX05FV1NfVVBcIixcIm1hY0lkXCI6XCI5NDI2ZmY3N2EzZjhmNDc3XCIsXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZX0iLCJ1c2VySWQiOiJTVVdHRDJGSlRSIiwiZHJtSWQiOiJJTkRJQV9ORVdTX1VQIiwiaWF0IjoxNzY4NjE1NzgzLCJleHAiOjE3Njg2MjY1OTN9.krgrMDPfGO83Fbsgkeubh4mVuZyQ8680unMsNjjndyg',
+      },
     ),
   ];
 
@@ -77,15 +111,17 @@ class _MyAppState extends State<MyApp> {
     SigmaFPM.instance.setConfig(
       apiBaseUrl: 'https://audit-drm-api-dev.sigmadrm.com',
       accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiNzI5LTczOS05NDMyIiwiZGV2aWNlSWQiOiIwMTA3MDAxNDYyN2VlOTU3IiwiY2hhbm5lbElkIjoxMDAsInBhY2thZ2VJZCI6ImFhYWEifQ.lWJMlNFlr8ZPqIsDlav9g1O2AWFZknk-8XZOYt-Mjl8',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiMDkxODUxODI2MzUiLCJkZXZpY2VJZCI6ImU5MTIzNzI4NGJmNGI3MWIiLCJjaGFubmVsSWQiOjEwMCwicGFja2FnZUlkIjoiYWFhYWFhYWEtYWFhYS1hYWFhLWFhYWEtYWFhYWFhYWFhYWFhIn0.ZhHS6_blLC-nGv5XWvoIoE3XAuM_5rNsV_B2a4hr5PI',
     );
     SigmaFPM.instance.start();
+    HardwareKeyboard.instance.addHandler(_handleKeyEvent);
     initializePlayer();
   }
 
   @override
   void dispose() {
     SigmaFPM.instance.stop();
+    HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
     _disposePlayer();
     super.dispose();
   }
@@ -106,6 +142,7 @@ class _MyAppState extends State<MyApp> {
     _videoController = VideoPlayerController.networkUrl(
       Uri.parse(config.url),
       drmConfiguration: config.drmConfiguration,
+      viewType: VideoViewType.textureView,
     );
 
     await _videoController!.initialize();
@@ -123,6 +160,7 @@ class _MyAppState extends State<MyApp> {
       allowFullScreen: true,
       allowMuting: true,
       showControls: true,
+      fullScreenByDefault: false,
       additionalOptions: (context) {
         return <OptionItem>[
           OptionItem(
@@ -139,8 +177,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _nextVideo() async {
+    _playerKey = UniqueKey();
     _currentIndex = (_currentIndex + 1) % _playlist.length;
     await initializePlayer();
+  }
+
+  bool _handleKeyEvent(KeyEvent event) {
+    if (event is KeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.arrowUp) {
+      _nextVideo();
+      return true;
+    }
+    return false;
   }
 
   /// -------------------------
@@ -150,11 +198,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sigma Player Demo')),
+      appBar: AppBar(
+        title: Text(
+          '${_playlist[_currentIndex]?.title}; ChannelId: ${_playlist[_currentIndex]?.channelId}',
+        ),
+      ),
       body: Column(
         children: <Widget>[
           Expanded(
             child: Center(
+              key: _playerKey,
               child:
                   _chewieController != null &&
                       _chewieController!
@@ -184,7 +237,6 @@ class _MyAppState extends State<MyApp> {
               ),
             ],
           ),
-          const SizedBox(height: 32),
         ],
       ),
     );
