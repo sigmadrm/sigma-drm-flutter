@@ -14,13 +14,16 @@ import java.util.Objects;
 
 public final class TextureExoPlayerEventListener extends ExoPlayerEventListener {
   private final boolean surfaceProducerHandlesCropAndRotation;
+  private final TextureVideoPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener;
 
   public TextureExoPlayerEventListener(
       @NonNull ExoPlayer exoPlayer,
       @NonNull VideoPlayerCallbacks events,
-      boolean surfaceProducerHandlesCropAndRotation) {
+      boolean surfaceProducerHandlesCropAndRotation,
+      @NonNull TextureVideoPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener) {
     super(exoPlayer, events);
     this.surfaceProducerHandlesCropAndRotation = surfaceProducerHandlesCropAndRotation;
+    this.onVideoSizeChangedListener = onVideoSizeChangedListener;
   }
 
   @Override
@@ -30,6 +33,9 @@ public final class TextureExoPlayerEventListener extends ExoPlayerEventListener 
     int width = videoSize.width;
     int height = videoSize.height;
     if (width != 0 && height != 0) {
+      if (onVideoSizeChangedListener != null) {
+        onVideoSizeChangedListener.onSizeChanged(width, height);
+      }
       // When the SurfaceTexture backend for Impeller is used, the preview should already
       // be correctly rotated.
       if (!surfaceProducerHandlesCropAndRotation) {
@@ -48,6 +54,13 @@ public final class TextureExoPlayerEventListener extends ExoPlayerEventListener 
       }
     }
     events.onInitialized(width, height, exoPlayer.getDuration(), rotationCorrection.getDegrees());
+  }
+
+  @Override
+  public void onVideoSizeChanged(VideoSize videoSize) {
+    if (onVideoSizeChangedListener != null) {
+      onVideoSizeChangedListener.onSizeChanged(videoSize.width, videoSize.height);
+    }
   }
 
   // A video's Format and its rotation degrees are unstable because they are not guaranteed

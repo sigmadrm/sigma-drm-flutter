@@ -90,7 +90,17 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
     }
     boolean surfaceProducerHandlesCropAndRotation = surfaceProducer.handlesCropAndRotation();
     return new TextureExoPlayerEventListener(
-        exoPlayer, videoPlayerEvents, surfaceProducerHandlesCropAndRotation);
+        exoPlayer,
+        videoPlayerEvents,
+        surfaceProducerHandlesCropAndRotation,
+        (width, height) -> {
+          assert surfaceProducer != null;
+          surfaceProducer.setSize(width, height);
+        });
+  }
+
+  public interface OnVideoSizeChangedListener {
+    void onSizeChanged(int width, int height);
   }
 
   @RestrictTo(RestrictTo.Scope.LIBRARY)

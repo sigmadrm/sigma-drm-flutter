@@ -56,51 +56,23 @@ class _MyAppState extends State<MyApp> {
 
   /// Playlist
   final List<VideoConfig> _playlist = [
-    const VideoConfig(
-      title: "Big bug bunny clear",
-      channelId: "78980",
-      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    ),
-    // VideoConfig(
-    //   title: 'Big bug bunny - MultiDRM',
-    //   channelId: "001",
-    //   url:
-    //       "https://sdrm-test.gviet.vn:9080/static/vod_staging/the_box/manifest.mpd",
-    //   drmConfiguration: {
-    //     "licenseServerUrl":
-    //         "https://license-staging.sigmadrm.com/license/verify/widevine",
-    //     "merchantId": "sctv",
-    //     "appId": "RedTV",
-    //     "userId": "flutter user id",
-    //     "sessionId": "session id",
-    //   },
-    // ),
     VideoConfig(
-      title: 'SANSAD_TV_HD',
-      channelId: "100",
-      url:
-          "http://live.ano.xcomcdn.com/manifest/SANSAD_TV_HD/masterSANSAD_TV_HD.m3u8",
-      drmConfiguration: {
-        'merchantId': 'anoplay',
-        'appId': 'anoplay_jwt',
-        'userId': 'SUWGD2FJTR',
-        'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJTVVdHRDJGSlRSXCIsXCJtZXJjaGFudFwiOlwiYW5vcGxheVwiLFwiYXNzZXRcIjpcIlNBTlNBRF9UVl9IRFwiLFwibWFjSWRcIjpcIjk0MjZmZjc3YTNmOGY0NzdcIixcInN0b3JlTGljZW5zZVwiOmZhbHNlfSIsInVzZXJJZCI6IlNVV0dEMkZKVFIiLCJkcm1JZCI6IlNBTlNBRF9UVl9IRCIsImlhdCI6MTc2ODYxNTg4NSwiZXhwIjoxNzY4NjI2Njk1fQ.rXJMJeGB6orOpJJY7O3fGAEezhxMH_PiPQM-G8BmZ6c',
-      },
-    ),
-
-    VideoConfig(
-      title: 'INDIA_NEWS_UP',
+      title: 'SPORTS_TEN_5_HD',
       channelId: "123",
       url:
-          "http://live.ano.xcomcdn.com/manifest/INDIA_NEWS_UP/masterINDIA_NEWS_UP.m3u8",
+          "https://live-on-akm.akamaized.net/manifest/vtv1/master.m3u8?manifestfilter=video_height%3A1-720",
       drmConfiguration: {
-        'merchantId': 'anoplay',
-        'appId': 'anoplay_jwt',
-        'userId': 'SUWGD2FJTR',
+        'merchantId': 'thudojsc',
+        'appId': 'VTVcabON',
+        'userId': 'G-R3VFD7QTQD',
         'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJTVVdHRDJGSlRSXCIsXCJtZXJjaGFudFwiOlwiYW5vcGxheVwiLFwiYXNzZXRcIjpcIklORElBX05FV1NfVVBcIixcIm1hY0lkXCI6XCI5NDI2ZmY3N2EzZjhmNDc3XCIsXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZX0iLCJ1c2VySWQiOiJTVVdHRDJGSlRSIiwiZHJtSWQiOiJJTkRJQV9ORVdTX1VQIiwiaWF0IjoxNzY4NjE1NzgzLCJleHAiOjE3Njg2MjY1OTN9.krgrMDPfGO83Fbsgkeubh4mVuZyQ8680unMsNjjndyg',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3MzE2MzYsImV4cCI6MTc2ODc1NTAzNn0.2lYW9meqp2d3iyObqMVeIbijYECp3pYt8L6Y93wMBig',
       },
+    ),
+    const VideoConfig(
+      title: "Big Buck Bunny",
+      channelId: "78980",
+      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
     ),
   ];
 
