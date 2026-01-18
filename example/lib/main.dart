@@ -15,7 +15,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Sigma Player Demo',
+      title: 'Sigma DRM',
       builder: (context, child) {
         return SigmaFPM.instance.buildOverlay(child: child ?? const SizedBox());
       },
@@ -56,51 +56,23 @@ class _MyAppState extends State<MyApp> {
 
   /// Playlist
   final List<VideoConfig> _playlist = [
-    const VideoConfig(
-      title: "Big bug bunny clear",
-      channelId: "78980",
-      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    ),
-    // VideoConfig(
-    //   title: 'Big bug bunny - MultiDRM',
-    //   channelId: "001",
-    //   url:
-    //       "https://sdrm-test.gviet.vn:9080/static/vod_staging/the_box/manifest.mpd",
-    //   drmConfiguration: {
-    //     "licenseServerUrl":
-    //         "https://license-staging.sigmadrm.com/license/verify/widevine",
-    //     "merchantId": "sctv",
-    //     "appId": "RedTV",
-    //     "userId": "flutter user id",
-    //     "sessionId": "session id",
-    //   },
-    // ),
     VideoConfig(
-      title: 'SANSAD_TV_HD',
-      channelId: "100",
-      url:
-          "http://live.ano.xcomcdn.com/manifest/SANSAD_TV_HD/masterSANSAD_TV_HD.m3u8",
-      drmConfiguration: {
-        'merchantId': 'anoplay',
-        'appId': 'anoplay_jwt',
-        'userId': 'SUWGD2FJTR',
-        'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJTVVdHRDJGSlRSXCIsXCJtZXJjaGFudFwiOlwiYW5vcGxheVwiLFwiYXNzZXRcIjpcIlNBTlNBRF9UVl9IRFwiLFwibWFjSWRcIjpcIjk0MjZmZjc3YTNmOGY0NzdcIixcInN0b3JlTGljZW5zZVwiOmZhbHNlfSIsInVzZXJJZCI6IlNVV0dEMkZKVFIiLCJkcm1JZCI6IlNBTlNBRF9UVl9IRCIsImlhdCI6MTc2ODYxNTg4NSwiZXhwIjoxNzY4NjI2Njk1fQ.rXJMJeGB6orOpJJY7O3fGAEezhxMH_PiPQM-G8BmZ6c',
-      },
-    ),
-
-    VideoConfig(
-      title: 'INDIA_NEWS_UP',
+      title: 'SPORTS_TEN_5_HD',
       channelId: "123",
       url:
-          "http://live.ano.xcomcdn.com/manifest/INDIA_NEWS_UP/masterINDIA_NEWS_UP.m3u8",
+          "https://live-on-akm.akamaized.net/manifest/vtv1/master.m3u8?manifestfilter=video_height%3A1-720",
       drmConfiguration: {
-        'merchantId': 'anoplay',
-        'appId': 'anoplay_jwt',
-        'userId': 'SUWGD2FJTR',
+        'merchantId': 'thudojsc',
+        'appId': 'VTVcabON',
+        'userId': 'G-R3VFD7QTQD',
         'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJTVVdHRDJGSlRSXCIsXCJtZXJjaGFudFwiOlwiYW5vcGxheVwiLFwiYXNzZXRcIjpcIklORElBX05FV1NfVVBcIixcIm1hY0lkXCI6XCI5NDI2ZmY3N2EzZjhmNDc3XCIsXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZX0iLCJ1c2VySWQiOiJTVVdHRDJGSlRSIiwiZHJtSWQiOiJJTkRJQV9ORVdTX1VQIiwiaWF0IjoxNzY4NjE1NzgzLCJleHAiOjE3Njg2MjY1OTN9.krgrMDPfGO83Fbsgkeubh4mVuZyQ8680unMsNjjndyg',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3MzE2MzYsImV4cCI6MTc2ODc1NTAzNn0.2lYW9meqp2d3iyObqMVeIbijYECp3pYt8L6Y93wMBig',
       },
+    ),
+    const VideoConfig(
+      title: "Big Buck Bunny",
+      channelId: "78980",
+      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
     ),
   ];
 
@@ -160,7 +132,6 @@ class _MyAppState extends State<MyApp> {
       allowFullScreen: true,
       allowMuting: true,
       showControls: true,
-      fullScreenByDefault: false,
       additionalOptions: (context) {
         return <OptionItem>[
           OptionItem(
@@ -198,44 +169,49 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '${_playlist[_currentIndex]?.title}; ChannelId: ${_playlist[_currentIndex]?.channelId}',
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Center(
-              key: _playerKey,
-              child:
-                  _chewieController != null &&
-                      _chewieController!
-                          .videoPlayerController
-                          .value
-                          .isInitialized
-                  ? Chewie(controller: _chewieController!)
-                  : const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [CircularProgressIndicator()],
-                    ),
-            ),
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            key: _playerKey,
+            child:
+                _chewieController?.videoPlayerController.value.isInitialized ==
+                    true
+                ? Chewie(controller: _chewieController!)
+                : const Center(child: CircularProgressIndicator()),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  _chewieController?.enterFullScreen();
-                },
-                child: const Text('Fullscreen'),
+          Positioned(
+            top: 50,
+            left: 20,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.black54,
+                borderRadius: BorderRadius.circular(8),
               ),
-              const SizedBox(width: 16),
-              TextButton(
-                onPressed: _nextVideo,
-                child: const Text('Next Video'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Title: ${_playlist[_currentIndex].title}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    'ChannelId: ${_playlist[_currentIndex].channelId}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    'URL: ${_playlist[_currentIndex].url}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Press Arrow Up to switch video',
+                    style: TextStyle(color: Colors.yellow),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ],
       ),
