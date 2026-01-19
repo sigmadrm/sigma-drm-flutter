@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
         'appId': 'VTVcabON',
         'userId': 'G-R3VFD7QTQD',
         'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3ODY3NTUsImV4cCI6MTc2ODgxMDE1NX0.YF9PpTKGoQVU1NIulgAxjlmpiBidg88c-HIkJHrOL7k',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
       },
     ),
     const VideoConfig(
@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
     SigmaFPM.instance.setConfig(
       apiBaseUrl: 'https://audit-drm-api-dev.sigmadrm.com',
       accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiMDkxODUxODI2MzUiLCJkZXZpY2VJZCI6IjIwZDY4ZTJjMTBkY2NjOTgiLCJjaGFubmVsSWQiOjEwMCwicGFja2FnZUlkIjoiYWFhYWFhYWEtYWFhYS1hYWFhLWFhYWEtYWFhYWFhYWFhYWFhIn0.XrTu8-ZGS2Lc7_1zW_mVcm2pnAXGRjUN-sWw1e9gylw',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiMDk5NTk1MTc2MjUiLCJkZXZpY2VJZCI6IjIwZDY4ZTJjMTBkY2NjOTgiLCJjaGFubmVsSWQiOjEwMCwicGFja2FnZUlkIjoiYWFhYWFhYWEtYWFhYS1hYWFhLWFhYWEtYWFhYWFhYWFhYWFhIn0.d161WX7YX59stuXVgI_4VgCSq074P2fF4GhxvOgcdCY',
     );
     SigmaFPM.instance.start();
     HardwareKeyboard.instance.addHandler(_handleKeyEvent);

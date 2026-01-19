@@ -10,8 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
+
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.RenderersFactory;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+
 import io.flutter.plugins.videoplayer.ExoPlayerEventListener;
 import io.flutter.plugins.videoplayer.VideoAsset;
 import io.flutter.plugins.videoplayer.VideoPlayer;
@@ -53,10 +59,12 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
         asset.getMediaItem(),
         options,
         () -> {
-          com.google.android.exoplayer2.trackselection.DefaultTrackSelector trackSelector =
-              new com.google.android.exoplayer2.trackselection.DefaultTrackSelector(context);
+          RenderersFactory renderersFactory = new DefaultRenderersFactory(context)
+                  .setEnableDecoderFallback(true)
+                  .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+          DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
           ExoPlayer.Builder builder =
-              new ExoPlayer.Builder(context)
+              new ExoPlayer.Builder(context, renderersFactory)
                   .setTrackSelector(trackSelector)
                   .setMediaSourceFactory(asset.getMediaSourceFactory(context));
           return builder.build();
