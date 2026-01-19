@@ -332,8 +332,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     this.videoPlayerOptions,
     this.httpHeaders = const <String, String>{},
     this.drmConfiguration = const <String, String>{},
-    this.viewType =
-        VideoViewType.textureView, // use platformView support Widevine L1
+    this.viewType = VideoViewType.textureView,
   }) : _closedCaptionFileFuture = closedCaptionFile,
        dataSource = url.toString(),
        dataSourceType = DataSourceType.network,

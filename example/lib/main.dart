@@ -84,7 +84,8 @@ class _MyAppState extends State<MyApp> {
     SigmaVideoPlayer.init();
     SigmaFPM.instance.setConfig(
       apiBaseUrl: 'https://audit-drm-api-dev.sigmadrm.com',
-      accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiMDk5NTk1MTc2MjUiLCJkZXZpY2VJZCI6IjIwZDY4ZTJjMTBkY2NjOTgiLCJjaGFubmVsSWQiOjEwMCwicGFja2FnZUlkIjoiYWFhYWFhYWEtYWFhYS1hYWFhLWFhYWEtYWFhYWFhYWFhYWFhIn0.d161WX7YX59stuXVgI_4VgCSq074P2fF4GhxvOgcdCY',
+      accessToken:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiMDk5NTk1MTc2MzIiLCJkZXZpY2VJZCI6IjIwZDY4ZTJjMTBkY2NjOTgiLCJjaGFubmVsSWQiOjEwMCwicGFja2FnZUlkIjoiYWFhYWFhYWEtYWFhYS1hYWFhLWFhYWEtYWFhYWFhYWFhYWFhIn0.8AsErZhZarJbzT2isIwSzfk8o3voqOVBhJuzRazmlZs',
     );
     SigmaFPM.instance.start();
     HardwareKeyboard.instance.addHandler(_handleKeyEvent);
@@ -179,15 +180,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final current = _playlist[_currentIndex];
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '${_playlist[_currentIndex].title}: ${_playlist[_currentIndex].channelId}',
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          /// =====================
+          /// VIDEO PLAYER (BOTTOM)
+          /// =====================
+          Positioned.fill(
             child: Center(
               key: _playerKey,
               child:
@@ -197,31 +199,75 @@ class _MyAppState extends State<MyApp> {
                           .value
                           .isInitialized
                   ? Chewie(controller: _chewieController!)
-                  : const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [CircularProgressIndicator()],
-                    ),
+                  : const CircularProgressIndicator(),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  _chewieController?.enterFullScreen();
-                },
-                child: const Text('Fullscreen'),
+
+          /// =====================
+          /// OVERLAY UI (TOP)
+          /// =====================
+          Positioned(
+            left: 16,
+            right: 16,
+            top: 24,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(8),
               ),
-              const SizedBox(width: 16),
-              TextButton(
-                onPressed: _nextVideo,
-                child: const Text('Next Video'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Title
+                  Text(
+                    current.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  /// Channel ID
+                  Text(
+                    'ChannelId: ${current.channelId}',
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  /// Device ID
+                  Text(
+                    'DeviceId: $_deviceId',
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          _chewieController?.enterFullScreen();
+                        },
+                        child: const Text('Fullscreen'),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      ElevatedButton(
+                        onPressed: _nextVideo,
+                        child: const Text('Next Video'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SelectableText('DeviceId: $_deviceId'),
+            ),
           ),
         ],
       ),

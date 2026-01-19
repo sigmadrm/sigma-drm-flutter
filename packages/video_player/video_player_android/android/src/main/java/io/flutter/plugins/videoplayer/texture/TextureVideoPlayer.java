@@ -126,7 +126,6 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
 
     Surface surface = new Surface(surfaceTextureEntry.surfaceTexture());
     this.exoPlayer.setVideoSurface(surface);
-    exoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
     needsSurface = surface == null;
   }
 
