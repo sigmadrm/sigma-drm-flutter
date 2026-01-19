@@ -23,6 +23,7 @@ import io.flutter.plugins.videoplayer.VideoAsset;
 import io.flutter.plugins.videoplayer.VideoPlayer;
 import io.flutter.plugins.videoplayer.VideoPlayerCallbacks;
 import io.flutter.plugins.videoplayer.VideoPlayerOptions;
+import io.flutter.view.TextureRegistry;
 import io.flutter.view.TextureRegistry.SurfaceProducer;
 
 /**
@@ -61,7 +62,7 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
         () -> {
           RenderersFactory renderersFactory = new DefaultRenderersFactory(context)
                   .setEnableDecoderFallback(true)
-                  .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+                  .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
           DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
           ExoPlayer.Builder builder =
               new ExoPlayer.Builder(context, renderersFactory)
@@ -69,6 +70,31 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
                   .setMediaSourceFactory(asset.getMediaSourceFactory(context));
           return builder.build();
         });
+  }
+
+  @NonNull
+  public static TextureVideoPlayer create(
+          @NonNull Context context,
+          @NonNull VideoPlayerCallbacks events,
+          @NonNull TextureRegistry.SurfaceTextureEntry surfaceTextureEntry,
+          @NonNull VideoAsset asset,
+          @NonNull VideoPlayerOptions options) {
+    return new TextureVideoPlayer(
+            events,
+            surfaceTextureEntry,
+            asset.getMediaItem(),
+            options,
+            () -> {
+              RenderersFactory renderersFactory = new DefaultRenderersFactory(context)
+                      .setEnableDecoderFallback(true)
+                      .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
+              DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
+              ExoPlayer.Builder builder =
+                      new ExoPlayer.Builder(context, renderersFactory)
+                              .setTrackSelector(trackSelector)
+                              .setMediaSourceFactory(asset.getMediaSourceFactory(context));
+              return builder.build();
+            });
   }
 
   // TODO: Migrate to stable API, see https://github.com/flutter/flutter/issues/147039.
@@ -88,6 +114,22 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
     needsSurface = surface == null;
   }
 
+  // TODO: Migrate to stable API, see https://github.com/flutter/flutter/issues/147039.
+  @VisibleForTesting
+  public TextureVideoPlayer(
+          @NonNull VideoPlayerCallbacks events,
+          @NonNull TextureRegistry.SurfaceTextureEntry surfaceTextureEntry,
+          @NonNull MediaItem mediaItem,
+          @NonNull VideoPlayerOptions options,
+          @NonNull ExoPlayerProvider exoPlayerProvider) {
+    super(events, mediaItem, options, surfaceTextureEntry, exoPlayerProvider);
+
+    Surface surface = new Surface(surfaceTextureEntry.surfaceTexture());
+    this.exoPlayer.setVideoSurface(surface);
+    exoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+    needsSurface = surface == null;
+  }
+
   @NonNull
   @Override
   protected ExoPlayerEventListener createExoPlayerEventListener(
@@ -101,12 +143,30 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
         exoPlayer, videoPlayerEvents, surfaceProducerHandlesCropAndRotation);
   }
 
+  @NonNull
+  @Override
+  protected ExoPlayerEventListener createExoPlayerEventListener(
+          @NonNull ExoPlayer exoPlayer, @Nullable TextureRegistry.SurfaceTextureEntry surfaceTextureEntry) {
+    if (surfaceTextureEntry == null) {
+      throw new IllegalArgumentException(
+              "surfaceTextureEntry cannot be null to create an ExoPlayerEventListener for TextureVideoPlayer.");
+    }
+//    boolean surfaceProducerHandlesCropAndRotation = surfaceTextureEntry.handlesCropAndRotation();
+    return new TextureExoPlayerEventListener(
+            exoPlayer, videoPlayerEvents, true);
+  }
+
   @RestrictTo(RestrictTo.Scope.LIBRARY)
   public void onSurfaceAvailable() {
     if (needsSurface) {
-      // TextureVideoPlayer must always set a surfaceProducer.
-      assert surfaceProducer != null;
-      exoPlayer.setVideoSurface(surfaceProducer.getSurface());
+
+      if(surfaceTextureEntry != null){
+        exoPlayer.setVideoSurface(new Surface(surfaceTextureEntry.surfaceTexture()));
+      } else {
+        // TextureVideoPlayer must always set a surfaceProducer.
+        assert surfaceProducer != null;
+        exoPlayer.setVideoSurface(surfaceProducer.getSurface());
+      }
       needsSurface = false;
     }
   }
@@ -121,8 +181,13 @@ public final class TextureVideoPlayer extends VideoPlayer implements SurfaceProd
     // Super must be called first to ensure the player is released before the surface.
     super.dispose();
 
-    // TextureVideoPlayer must always set a surfaceProducer.
-    assert surfaceProducer != null;
-    surfaceProducer.release();
+    if(surfaceProducer != null){
+        surfaceProducer.release();
+        surfaceProducer= null;
+    }
+    if(surfaceTextureEntry != null){
+        surfaceTextureEntry.release();
+        surfaceTextureEntry = null;
+    }
   }
 }

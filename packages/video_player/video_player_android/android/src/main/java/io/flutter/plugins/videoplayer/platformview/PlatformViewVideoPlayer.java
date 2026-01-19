@@ -20,13 +20,14 @@ import io.flutter.plugins.videoplayer.VideoAsset;
 import io.flutter.plugins.videoplayer.VideoPlayer;
 import io.flutter.plugins.videoplayer.VideoPlayerCallbacks;
 import io.flutter.plugins.videoplayer.VideoPlayerOptions;
+import io.flutter.view.TextureRegistry;
 import io.flutter.view.TextureRegistry.SurfaceProducer;
 
 /**
  * A subclass of {@link VideoPlayer} that adds functionality related to platform view as a way of
  * displaying the video in the app.
  */
-public class PlatformViewVideoPlayer extends VideoPlayer {
+public abstract class PlatformViewVideoPlayer extends VideoPlayer {
   // TODO: Migrate to stable API, see https://github.com/flutter/flutter/issues/147039.
   @VisibleForTesting
   public PlatformViewVideoPlayer(
@@ -34,7 +35,7 @@ public class PlatformViewVideoPlayer extends VideoPlayer {
       @NonNull MediaItem mediaItem,
       @NonNull VideoPlayerOptions options,
       @NonNull ExoPlayerProvider exoPlayerProvider) {
-    super(events, mediaItem, options, /* surfaceProducer */ null, exoPlayerProvider);
+    super(events, mediaItem, options, /* surfaceProducer */ (SurfaceProducer) null, exoPlayerProvider);
   }
 
   /**
@@ -54,20 +55,25 @@ public class PlatformViewVideoPlayer extends VideoPlayer {
       @NonNull VideoAsset asset,
       @NonNull VideoPlayerOptions options) {
     return new PlatformViewVideoPlayer(
-        events,
-        asset.getMediaItem(),
-        options,
-        () -> {
-        RenderersFactory renderersFactory = new DefaultRenderersFactory(context)
-                .setEnableDecoderFallback(true)
-                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
-          DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
-          ExoPlayer.Builder builder =
-              new ExoPlayer.Builder(context, renderersFactory)
-                  .setTrackSelector(trackSelector)
-                  .setMediaSourceFactory(asset.getMediaSourceFactory(context));
-          return builder.build();
-        });
+            events,
+            asset.getMediaItem(),
+            options,
+            () -> {
+              RenderersFactory renderersFactory = new DefaultRenderersFactory(context)
+                      .setEnableDecoderFallback(true)
+                      .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
+              DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
+              ExoPlayer.Builder builder =
+                      new ExoPlayer.Builder(context, renderersFactory)
+                              .setTrackSelector(trackSelector)
+                              .setMediaSourceFactory(asset.getMediaSourceFactory(context));
+              return builder.build();
+            }) {
+      @Override
+      protected ExoPlayerEventListener createExoPlayerEventListener(@NonNull ExoPlayer exoPlayer, @Nullable TextureRegistry.SurfaceTextureEntry surfaceTextureEntry) {
+        return null;
+      }
+    };
   }
 
   @NonNull

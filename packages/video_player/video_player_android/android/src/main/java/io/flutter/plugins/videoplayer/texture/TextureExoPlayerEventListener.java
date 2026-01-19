@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.video.VideoSize;
 import com.google.android.exoplayer2.ExoPlayer;
+
+import io.flutter.Log;
 import io.flutter.plugins.videoplayer.ExoPlayerEventListener;
 import io.flutter.plugins.videoplayer.VideoPlayerCallbacks;
 import java.util.Objects;
@@ -29,6 +31,9 @@ public final class TextureExoPlayerEventListener extends ExoPlayerEventListener 
     RotationDegrees rotationCorrection = RotationDegrees.ROTATE_0;
     int width = videoSize.width;
     int height = videoSize.height;
+
+    Log.e("SIGMA", width + "x" + height + " surfaceProducerHandlesCropAndRotation = " + surfaceProducerHandlesCropAndRotation);
+
     if (width != 0 && height != 0) {
       // When the SurfaceTexture backend for Impeller is used, the preview should already
       // be correctly rotated.

@@ -81,7 +81,7 @@ public class VideoPlayerPluginTest {
               "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
               null,
               new HashMap<>(),
-              null);
+              null, null);
 
       final long playerId = plugin.createForPlatformView(options);
 
@@ -95,15 +95,15 @@ public class VideoPlayerPluginTest {
     try (MockedStatic<TextureVideoPlayer> mockedTextureVideoPlayerStatic =
         mockStatic(TextureVideoPlayer.class)) {
       mockedTextureVideoPlayerStatic
-          .when(() -> TextureVideoPlayer.create(any(), any(), any(), any(), any()))
+          .when(() -> TextureVideoPlayer.create((Context) any(), (VideoPlayerCallbacks) any(), (TextureRegistry.SurfaceProducer) any(), any(), any()))
           .thenReturn(mock(TextureVideoPlayer.class));
 
       final CreationOptions options =
           new CreationOptions(
-              "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
-              null,
-              new HashMap<>(),
-              null);
+                  "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
+                  null,
+                  new HashMap<>(),
+                  null, null);
 
       final TexturePlayerIds ids = plugin.createForTextureView(options);
 

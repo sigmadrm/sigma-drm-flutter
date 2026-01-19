@@ -79,6 +79,7 @@ Configure the global Fingerprint & Message module.
 
 ```dart
 SigmaFPM.instance.setConfig(
+  apiBaseUrl: "SIGMA_DRM_API_BASE_URL",
   accessToken: 'YOUR_JWT_ACCESS_TOKEN',
 );
 

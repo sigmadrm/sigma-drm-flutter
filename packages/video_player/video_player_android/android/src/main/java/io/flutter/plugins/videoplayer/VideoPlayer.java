@@ -21,7 +21,9 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverride;
 
+import io.flutter.view.TextureRegistry;
 import io.flutter.view.TextureRegistry.SurfaceProducer;
+import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,8 @@ import java.util.List;
  */
 public abstract class VideoPlayer implements VideoPlayerInstanceApi {
   @NonNull protected final VideoPlayerCallbacks videoPlayerEvents;
-  @Nullable protected final SurfaceProducer surfaceProducer;
+  @Nullable protected SurfaceProducer surfaceProducer;
+  @Nullable protected SurfaceTextureEntry surfaceTextureEntry;
   @Nullable private DisposeHandler disposeHandler;
   @NonNull protected ExoPlayer exoPlayer;
   // TODO: Migrate to stable API, see https://github.com/flutter/flutter/issues/147039.
@@ -79,13 +82,35 @@ public abstract class VideoPlayer implements VideoPlayerInstanceApi {
     setAudioAttributes(exoPlayer, options.mixWithOthers);
   }
 
+  public VideoPlayer(
+          @NonNull VideoPlayerCallbacks events,
+          @NonNull MediaItem mediaItem,
+          @NonNull VideoPlayerOptions options,
+          @Nullable TextureRegistry.SurfaceTextureEntry surfaceTextureEntry,
+          @NonNull ExoPlayerProvider exoPlayerProvider) {
+    this.videoPlayerEvents = events;
+    this.surfaceTextureEntry = surfaceTextureEntry;
+    exoPlayer = exoPlayerProvider.get();
+
+    // Try to get the track selector from the ExoPlayer if it was built with one
+    if (exoPlayer.getTrackSelector() instanceof DefaultTrackSelector) {
+      trackSelector = (DefaultTrackSelector) exoPlayer.getTrackSelector();
+    }
+
+    exoPlayer.setMediaItem(mediaItem);
+    exoPlayer.prepare();
+    exoPlayer.setPlayWhenReady(true);
+    exoPlayer.addListener(createExoPlayerEventListener(exoPlayer, surfaceTextureEntry));
+    setAudioAttributes(exoPlayer, options.mixWithOthers);
+  }
+
   public void setDisposeHandler(@Nullable DisposeHandler handler) {
     disposeHandler = handler;
   }
 
   @NonNull
-  protected abstract ExoPlayerEventListener createExoPlayerEventListener(
-      @NonNull ExoPlayer exoPlayer, @Nullable SurfaceProducer surfaceProducer);
+  protected abstract ExoPlayerEventListener createExoPlayerEventListener(@NonNull ExoPlayer exoPlayer, @Nullable SurfaceProducer surfaceProducer);
+  protected abstract ExoPlayerEventListener createExoPlayerEventListener(@NonNull ExoPlayer exoPlayer, @Nullable SurfaceTextureEntry surfaceTextureEntry);
 
   private static void setAudioAttributes(ExoPlayer exoPlayer, boolean isMixMode) {
     exoPlayer.setAudioAttributes(
