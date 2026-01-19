@@ -25,11 +25,13 @@ class App extends StatelessWidget {
 
 /// Video configuration model
 class VideoConfig {
+  final String title;
   final String url;
   final Map<String, String> drmConfiguration;
   final String channelId;
 
   const VideoConfig({
+    required this.title,
     required this.url,
     required this.channelId,
     this.drmConfiguration = const {},
@@ -53,18 +55,8 @@ class _MyAppState extends State<MyApp> {
   /// Playlist
   final List<VideoConfig> _playlist = [
     VideoConfig(
-      channelId: "123",
-      url:
-          "https://sdrm-test.gviet.vn:9080/static/vod_production/big_bug_bunny/manifest.mpd",
-      drmConfiguration: {
-        'merchantId': 'sigma_packager_lite',
-        'appId': 'demo',
-        'userId': 'user id',
-        'sessionId': 'session id',
-      },
-    ),
-    VideoConfig(
-      channelId: "4567",
+      title: 'VTV1',
+      channelId: "100",
       url:
           "https://live-on-akm.akamaized.net/manifest/vtv1/master.m3u8?manifestfilter=video_height%3A1-720",
       drmConfiguration: {
@@ -72,10 +64,11 @@ class _MyAppState extends State<MyApp> {
         'appId': 'VTVcabON',
         'userId': 'G-R3VFD7QTQD',
         'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg0NDU3ODUsImV4cCI6MTc2ODQ2OTE4NX0.kba0PyFy6OdZ_QyZgFFSwmk_ygkhM3Nn5vtDyINGFso',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3ODY3NTUsImV4cCI6MTc2ODgxMDE1NX0.YF9PpTKGoQVU1NIulgAxjlmpiBidg88c-HIkJHrOL7k',
       },
     ),
     const VideoConfig(
+      title: "Big Buck Bunny Clear",
       channelId: "78980",
       url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
     ),
@@ -90,7 +83,7 @@ class _MyAppState extends State<MyApp> {
     SigmaFPM.instance.setConfig(
       apiBaseUrl: 'https://audit-drm-api-dev.sigmadrm.com',
       accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiNzI5LTczOS05NDMyIiwiZGV2aWNlSWQiOiIwMTA3MDAxNDYyN2VlOTU3IiwiY2hhbm5lbElkIjoxMDAsInBhY2thZ2VJZCI6ImFhYWEifQ.lWJMlNFlr8ZPqIsDlav9g1O2AWFZknk-8XZOYt-Mjl8',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3NTA5OTEyMDYsImF1ZCI6IiIsInN1YiI6IiIsInBob25lIjoiMDkxODUxODI2MzUiLCJkZXZpY2VJZCI6IjIwZDY4ZTJjMTBkY2NjOTgiLCJjaGFubmVsSWQiOjEwMCwicGFja2FnZUlkIjoiYWFhYWFhYWEtYWFhYS1hYWFhLWFhYWEtYWFhYWFhYWFhYWFhIn0.XrTu8-ZGS2Lc7_1zW_mVcm2pnAXGRjUN-sWw1e9gylw',
     );
 
     SigmaFPM.instance.start();

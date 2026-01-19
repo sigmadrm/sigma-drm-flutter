@@ -21,13 +21,14 @@ class SigmaVideoPlayer {
     }
   }
 
-  static Future<String?> getSigmaDeviceId() async {
+  static Future<String> getSigmaDeviceId() async {
     try {
-      final String? deviceId = await _channel.invokeMethod('getSigmaDeviceId');
+      final String deviceId =
+          await _channel.invokeMethod('getSigmaDeviceId') ?? '';
       return deviceId;
     } catch (e) {
       debugPrint('[SigmaVideoPlayer] Failed to get deviceId: $e');
-      return null;
+      return "";
     }
   }
 }
