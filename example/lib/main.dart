@@ -57,6 +57,42 @@ class _MyAppState extends State<MyApp> {
 
   /// Playlist
   final List<VideoConfig> _playlist = [
+    // VideoConfig(
+    //   title: 'SAB_SD',
+    //   channelId: "SAB_SD",
+    //   url: "http://103.204.167.124/hls/SAB_SD/index.m3u8",
+    //   drmConfiguration: {
+    //     'merchantId': 'abs',
+    //     'appId': 'sigma_abs',
+    //     'userId': 'G-R3VFD7QTQD',
+    //     'sessionId':
+    //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
+    //   },
+    // ),
+    VideoConfig(
+      title: 'SONY_MAX',
+      channelId: "SONY_MAX",
+      url: "http://103.204.167.124/hls/SONY_MAX/index.m3u8",
+      drmConfiguration: {
+        'merchantId': 'abs',
+        'appId': 'sigma_abs',
+        'userId': 'G-R3VFD7QTQD',
+        'sessionId':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
+      },
+    ),
+    VideoConfig(
+      title: 'SONY_AATH',
+      channelId: "SONY_AATH",
+      url: "http://103.204.167.124/hls/SONY_AATH/index.m3u8",
+      drmConfiguration: {
+        'merchantId': 'abs',
+        'appId': 'sigma_abs',
+        'userId': 'G-R3VFD7QTQD',
+        'sessionId':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
+      },
+    ),
     VideoConfig(
       title: 'VTV1',
       channelId: "100",
