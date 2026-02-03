@@ -57,53 +57,15 @@ class _MyAppState extends State<MyApp> {
 
   /// Playlist
   final List<VideoConfig> _playlist = [
-    // VideoConfig(
-    //   title: 'SAB_SD',
-    //   channelId: "SAB_SD",
-    //   url: "http://103.204.167.124/hls/SAB_SD/index.m3u8",
-    //   drmConfiguration: {
-    //     'merchantId': 'abs',
-    //     'appId': 'sigma_abs',
-    //     'userId': 'G-R3VFD7QTQD',
-    //     'sessionId':
-    //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
-    //   },
-    // ),
     VideoConfig(
-      title: 'SONY_MAX',
-      channelId: "SONY_MAX",
-      url: "http://103.204.167.124/hls/SONY_MAX/index.m3u8",
+      title: 'Channel title',
+      channelId: "channelId",
+      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
       drmConfiguration: {
-        'merchantId': 'abs',
-        'appId': 'sigma_abs',
-        'userId': 'G-R3VFD7QTQD',
-        'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
-      },
-    ),
-    VideoConfig(
-      title: 'SONY_AATH',
-      channelId: "SONY_AATH",
-      url: "http://103.204.167.124/hls/SONY_AATH/index.m3u8",
-      drmConfiguration: {
-        'merchantId': 'abs',
-        'appId': 'sigma_abs',
-        'userId': 'G-R3VFD7QTQD',
-        'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
-      },
-    ),
-    VideoConfig(
-      title: 'VTV1',
-      channelId: "100",
-      url:
-          "https://live-on-akm.akamaized.net/manifest/vtv1/master.m3u8?manifestfilter=video_height%3A1-720",
-      drmConfiguration: {
-        'merchantId': 'thudojsc',
-        'appId': 'VTVcabON',
-        'userId': 'G-R3VFD7QTQD',
-        'sessionId':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZGkiOiJ7XCJ1c2VyXCI6XCJHLVIzVkZEN1FUUURcIixcIm1lcmNoYW50XCI6XCJ0aHVkb2pzY1wiLFwiYXNzZXRcIjpcInZ0djFcIn0iLCJ1c2VySWQiOiJHLVIzVkZEN1FUUUQiLCJkcm1JZCI6InZ0djEiLCJpYXQiOjE3Njg3OTY5MTksImV4cCI6MTc2ODgyMDMxOX0.rP6426MzOOoD_BwTxEqHJ7AWQWijONllihwPmHloWQs',
+        'merchantId': 'merchantId',
+        'appId': 'appId',
+        'userId': 'userId',
+        'sessionId': 'sessionId',
       },
     ),
     const VideoConfig(
@@ -116,8 +78,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _getDeviceId();
-    SigmaVideoPlayer.init();
+    _init();
+  }
+
+  void _init() async {
+    await SigmaVideoPlayer.init();
+    _deviceId = await SigmaVideoPlayer.getSigmaDeviceId();
+    if (mounted) setState(() {});
+
     SigmaFPM.instance.setConfig(
       apiBaseUrl: 'https://audit-drm-api-dev.sigmadrm.com',
       accessToken:
@@ -199,15 +167,6 @@ class _MyAppState extends State<MyApp> {
       return true;
     }
     return false;
-  }
-
-  Future<void> _getDeviceId() async {
-    try {
-      _deviceId = await SigmaVideoPlayer.getSigmaDeviceId();
-      if (mounted) setState(() {});
-    } catch (e) {
-      debugPrint("Error getting deviceId: $e");
-    }
   }
 
   /// -------------------------

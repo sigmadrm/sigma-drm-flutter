@@ -1,35 +1,40 @@
-#Flutter Wrapper
--keep class io.flutter.app.** { *; }
--keep class io.flutter.plugin.**  { *; }
--keep class io.flutter.util.**  { *; }
--keep class io.flutter.view.**  { *; }
--keep class io.flutter.**  { *; }
--keep class io.flutter.plugins.**  { *; }
+# Flutter & Plugins
+-keep class io.flutter.** { *; }
 
-# XML Pull Parser - Fix kxml2 compatibility issues
+# Sigma DRM (Critical)
+-keep class com.sigma.** { *; }
+
+# System Security & Crypto
+-keep class java.security.** { *; }
+-keep interface java.security.** { *; }
+-keep class javax.crypto.** { *; }
+-keep interface javax.crypto.** { *; }
+-keep class javax.security.** { *; }
+-keep class android.security.keystore.** { *; }
+-keep class java.util.UUID { *; }
+
+# Network & Hardware
+-keep class java.net.NetworkInterface { *; }
+-keep class java.util.Enumeration { *; }
+-keep class android.media.MediaDrm { *; }
+-keep class android.media.MediaRouter { *; }
+
+# Storage
+-keep class android.content.SharedPreferences { *; }
+-keep interface android.content.SharedPreferences$** { *; }
+
+# SpongyCastle
+-dontwarn org.spongycastle.**
+-keep class org.spongycastle.** { *; }
+-dontwarn javax.naming.**
+
+# XML Parsers (kxml2)
 -dontwarn org.xmlpull.v1.**
 -dontwarn org.kxml2.**
+-dontwarn android.content.res.XmlResourceParser
 -keep class org.xmlpull.v1.** { *; }
--keep interface org.xmlpull.v1.** { *; }
 -keep class org.kxml2.** { *; }
 
-# Ignore warnings about Android SDK classes implementing library interfaces
--dontwarn android.content.res.XmlResourceParser
-
-
-# SpongyCastle and javax.naming
--dontwarn javax.naming.**
--dontwarn org.spongycastle.**
--keep class org.spongycastle.** { *;}
-
-# Play Core (Deferred Components)
+# ExoPlayer & Play Core
+-dontwarn com.google.android.exoplayer2.**
 -dontwarn com.google.android.play.core.**
-
-# Sigma DRM
--keep class com.sigma.** { *; }
--keepclasseswithmembers class com.sigma.** { *; }
--keepclassmembers class com.sigma.** {
-    <fields>;
-    <methods>;
-}
--keep interface com.sigma.** { *; }

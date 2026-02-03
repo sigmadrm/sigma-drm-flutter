@@ -43,6 +43,15 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
     return _api.initialize();
   }
 
+  /// Gets the Sigma device ID from the native SDK.
+  ///
+  /// This method must be called after [init].
+  /// On iOS, this currently returns an empty string (placeholder).
+  @override
+  Future<String> getSigmaDeviceId() async {
+    return await _api.getSigmaDeviceId();
+  }
+
   @override
   Future<void> dispose(int playerId) async {
     final _PlayerInstance? player = _players.remove(playerId);

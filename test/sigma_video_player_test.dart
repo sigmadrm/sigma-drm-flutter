@@ -87,6 +87,41 @@ class MockVideoPlayerPlatform
   Stream<VideoEvent> videoEventsFor(int textureId) {
     throw UnimplementedError();
   }
+
+  @override
+  Widget buildViewWithOptions(VideoViewOptions options) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int?> createWithOptions(VideoCreationOptions options) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<VideoAudioTrack>> getAudioTracks(int playerId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getSigmaDeviceId() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> selectAudioTrack(int playerId, String trackId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setAllowBackgroundPlayback(bool allowBackgroundPlayback) {
+    throw UnimplementedError();
+  }
+
+  @override
+  bool isAudioTrackSupportAvailable() {
+    return false;
+  }
 }
 
 void main() {

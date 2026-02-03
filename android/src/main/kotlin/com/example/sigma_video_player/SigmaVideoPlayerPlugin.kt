@@ -1,7 +1,5 @@
 package com.example.sigma_video_player
 
-import com.sigma.drm.NativeHelper
-import com.sigma.drm.SigmaHelper
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -30,19 +28,6 @@ class SigmaVideoPlayerPlugin :
         when (call.method) {
             "getPlatformVersion" -> {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
-            }
-
-            "getSigmaDeviceId" -> {
-                try {
-                    SigmaHelper.instance().init();
-                    val macAddress = NativeHelper.getMacAddress();
-                    val androidId = NativeHelper.getDeviceId();
-                    val deviceId = if (macAddress.equals("02:00:00:00:00:00")) androidId else macAddress;
-
-                    result.success(deviceId)
-                } catch (e: Exception) {
-                    result.error("SIGMA_ERROR", e.message, null)
-                }
             }
 
             else -> {

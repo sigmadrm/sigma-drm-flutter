@@ -160,6 +160,9 @@ abstract class AndroidVideoPlayerApi {
   void dispose(int playerId);
   void setMixWithOthers(bool mixWithOthers);
   String getLookupKeyForAsset(String asset, String? packageName);
+  // Gets the Sigma device ID from native SDK.
+  // This must be called after initialize() to ensure SigmaHelper is ready.
+  String getSigmaDeviceId();
 }
 
 @HostApi()

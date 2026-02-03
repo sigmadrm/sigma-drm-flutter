@@ -262,6 +262,13 @@ static void upgradeAudioSessionCategory(AVAudioSessionCategory requestedCategory
   return [NSURL fileURLWithPath:path].absoluteString;
 }
 
+- (nullable NSString *)getSigmaDeviceIdWithError:(FlutterError *_Nullable *_Nonnull)error {
+  // TODO: Implement Sigma device ID retrieval for iOS
+  // This should integrate with the iOS Sigma DRM SDK when available
+  NSLog(@"[FVPVideoPlayerPlugin] getSigmaDeviceId not yet implemented for iOS");
+  return @"sigma_device_id";
+}
+
 /// Returns the AVPlayerItem corresponding to the given player creation options.
 - (nonnull AVPlayerItem *)playerItemWithCreationOptions:(nonnull FVPCreationOptions *)options {
   NSDictionary<NSString *, NSString *> *headers = options.httpHeaders;

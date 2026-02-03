@@ -31,7 +31,7 @@ dependencies:
   sigma_video_player:
     git:
       url: https://github.com/sigmadrm/sigma-drm-flutter.git
-      ref: v1.1.0 # Replace with the latest version
+      ref: v1.1.1 # Replace with the latest version
 ```
 
 Install dependencies:
