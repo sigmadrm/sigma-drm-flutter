@@ -1234,3 +1234,23 @@ class ClosedCaption extends StatelessWidget {
     );
   }
 }
+
+/// Gets the Sigma device ID from the native SDK.
+///
+/// This function must be called after the video player platform has been initialized
+/// (i.e., after calling [VideoPlayerPlatform.instance.init()]).
+///
+/// On Android, this retrieves the device ID from the Sigma DRM SDK.
+/// On iOS, this is not yet implemented and returns an empty string with a debug log.
+/// On other platforms, returns an empty string.
+///
+/// Returns the device ID string, or an empty string if there's an error or
+/// the platform doesn't support this feature.
+Future<String> getSigmaDeviceId() async {
+  try {
+    return await _videoPlayerPlatform.getSigmaDeviceId();
+  } catch (e) {
+    debugPrint('[getSigmaDeviceId] Error: $e');
+    return '';
+  }
+}

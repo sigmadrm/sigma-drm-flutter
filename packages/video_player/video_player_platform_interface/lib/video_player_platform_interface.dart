@@ -150,6 +150,15 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
   ///
   /// The default implementation returns `false`. Platform implementations
   /// should override this to return `true` if they support audio track selection.
+  /// Gets the Sigma device ID from the native SDK.
+  ///
+  /// This method must be called after the plugin has been initialized.
+  /// Returns the device ID string, or an empty string if there's an error or
+  /// the platform doesn't support this feature.
+  Future<String> getSigmaDeviceId() {
+    throw UnimplementedError('getSigmaDeviceId() has not been implemented.');
+  }
+
   bool isAudioTrackSupportAvailable() {
     return false;
   }

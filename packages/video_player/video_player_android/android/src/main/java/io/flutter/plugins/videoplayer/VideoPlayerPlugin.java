@@ -210,6 +210,25 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
         : flutterState.keyForAssetAndPackageName.get(asset, packageName);
   }
 
+  @Override
+  public @NonNull String getSigmaDeviceId() {
+    try {
+      // SigmaHelper.init() is already called in initialize() method
+      String macAddress = com.sigma.drm.NativeHelper.getMacAddress();
+      String androidId = com.sigma.drm.NativeHelper.getDeviceId();
+      
+      // Use androidId if macAddress is the default value
+      String deviceId = "02:00:00:00:00:00".equals(macAddress) ? androidId : macAddress;
+      
+      Log.d(TAG, "getSigmaDeviceId: " + deviceId);
+      return deviceId != null ? deviceId : "";
+    } catch (Exception e) {
+      Log.e(TAG, "Error getting Sigma device ID", e);
+      return "";
+    }
+  }
+
+
   private interface KeyForAssetFn {
     String get(String asset);
   }

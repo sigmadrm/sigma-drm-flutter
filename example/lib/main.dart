@@ -116,8 +116,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _getDeviceId();
-    SigmaVideoPlayer.init();
+    _init();
+  }
+
+  void _init() async {
+    await SigmaVideoPlayer.init();
+    _deviceId = await SigmaVideoPlayer.getSigmaDeviceId();
+    if (mounted) setState(() {});
+
     SigmaFPM.instance.setConfig(
       apiBaseUrl: 'https://audit-drm-api-dev.sigmadrm.com',
       accessToken:
@@ -199,15 +205,6 @@ class _MyAppState extends State<MyApp> {
       return true;
     }
     return false;
-  }
-
-  Future<void> _getDeviceId() async {
-    try {
-      _deviceId = await SigmaVideoPlayer.getSigmaDeviceId();
-      if (mounted) setState(() {});
-    } catch (e) {
-      debugPrint("Error getting deviceId: $e");
-    }
   }
 
   /// -------------------------

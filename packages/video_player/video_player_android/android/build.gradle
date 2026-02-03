@@ -21,6 +21,9 @@ rootProject.allprojects {
         maven {
             url "https://maven.sigmadrm.com"
         }
+        flatDir {
+            dirs "${project(':video_player_android').projectDir}/src/jniLib"
+        }
     }
 }
 
@@ -62,6 +65,7 @@ android {
         implementation "com.sigma.drm:sigma-player-dash:${sigmaPlayerVersion}"
         implementation "com.sigma.drm:sigma-player-datasource:${sigmaPlayerVersion}"
         implementation "com.sigma.drm:sigma-player-decoder:${sigmaPlayerVersion}"
+        // implementation (name: 'library-hls-release', ext: 'aar')
         implementation "com.sigma.drm:sigma-player-hls:${sigmaPlayerVersion}"
         implementation "com.sigma.drm:sigma-player-smoothstreaming:${sigmaPlayerVersion}"
         implementation "com.sigma.drm:sigma-player-ui:${sigmaPlayerVersion}"

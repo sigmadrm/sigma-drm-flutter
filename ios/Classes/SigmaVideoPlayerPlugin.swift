@@ -12,9 +12,6 @@ public class SigmaVideoPlayerPlugin: NSObject, FlutterPlugin {
     switch call.method {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
-    case "getSigmaDeviceId":
-      // Comming soon
-      result("ios_device_id_placeholder")
     default:
       result(FlutterMethodNotImplemented)
     }

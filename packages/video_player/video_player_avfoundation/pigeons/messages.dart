@@ -55,6 +55,10 @@ abstract class AVFoundationVideoPlayerApi {
   void setMixWithOthers(bool mixWithOthers);
   @ObjCSelector('fileURLForAssetWithName:package:')
   String? getAssetUrl(String asset, String? package);
+  // Gets the Sigma device ID from native SDK on iOS.
+  // This must be called after initialize().
+  @ObjCSelector('getSigmaDeviceId')
+  String getSigmaDeviceId();
 }
 
 @HostApi()

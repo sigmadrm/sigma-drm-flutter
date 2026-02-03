@@ -268,6 +268,15 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
     return true;
   }
 
+  /// Gets the Sigma device ID from the native SDK.
+  ///
+  /// This method must be called after [init] to ensure SigmaHelper is properly initialized.
+  /// Returns the device ID string, or an empty string if there's an error.
+  @override
+  Future<String> getSigmaDeviceId() async {
+    return await _api.getSigmaDeviceId();
+  }
+
   _PlayerInstance _playerWith({required int id}) {
     final _PlayerInstance? player = _players[id];
     return player ?? (throw StateError('No active player with ID $id.'));
