@@ -52,6 +52,15 @@ flutter pub get
 
 ---
 
+## 🛠 Android Build Configuration
+
+To prevent **Release build crashes** caused by Obfuscation (R8/ProGuard), you **must** add the following rules to `android/app/proguard-rules.pro`.
+
+📌 **Reference ProGuard Rules:**  
+[example/android/app/proguard-rules.pro](example/android/app/proguard-rules.pro)
+
+---
+
 ## 🚀 Usage Guide
 
 ### 1️⃣ Initialize SigmaVideoPlayer
