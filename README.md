@@ -158,6 +158,16 @@ SigmaFPM.instance.setAccessToken('YOUR_JWT_ACCESS_TOKEN');
 
 ---
 
+### 7️⃣ Get Sigma Device ID
+
+You can retrieve the unique device identifier used by SigmaDRM.
+
+```dart
+String deviceId = await SigmaVideoPlayer.getSigmaDeviceId();
+```
+
+---
+
 ## 🔧 Configuration Parameters
 
 | Placeholder                  | Description                                                                          |
