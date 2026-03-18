@@ -5,10 +5,12 @@
 package io.flutter.plugins.videoplayer;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.LongSparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.sigma.drm.NativeHelper;
 import com.sigma.drm.SigmaHelper;
 
 import java.util.Map;
@@ -213,7 +215,8 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   @Override
   public @NonNull String getSigmaDeviceId() {
     try {
-      String deviceId = com.sigma.drm.NativeHelper.getSigmaDeviceId();
+      String deviceId = SigmaHelper.getSigmaDeviceId();
+      Log.e(TAG, "Android SDK version: " + Build.VERSION.SDK_INT);
       return deviceId != null ? deviceId : "";
     } catch (Exception e) {
       Log.e(TAG, "Error getting Sigma device ID", e);
@@ -224,7 +227,7 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   @Override
   public @NonNull String getFingerprintId() {
     try {
-      String fingerprintId = com.sigma.drm.NativeHelper.getFingerprintId();
+      String fingerprintId = SigmaHelper.getFingerprintId();
       return fingerprintId != null ? fingerprintId : "";
     } catch (Exception e) {
       Log.e(TAG, "Error getting fingerprint ID", e);
