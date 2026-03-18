@@ -684,6 +684,7 @@ interface AndroidVideoPlayerApi {
   fun setMixWithOthers(mixWithOthers: Boolean)
   fun getLookupKeyForAsset(asset: String, packageName: String?): String
   fun getSigmaDeviceId(): String
+  fun getFingerprintId(): String
 
   companion object {
     /** The codec used by AndroidVideoPlayerApi. */
@@ -804,6 +805,21 @@ interface AndroidVideoPlayerApi {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
               listOf(api.getSigmaDeviceId())
+            } catch (exception: Throwable) {
+              MessagesPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.video_player_android.AndroidVideoPlayerApi.getFingerprintId$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              listOf(api.getFingerprintId())
             } catch (exception: Throwable) {
               MessagesPigeonUtils.wrapError(exception)
             }

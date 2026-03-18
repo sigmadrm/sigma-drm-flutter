@@ -10,13 +10,13 @@ class SigmaFPMOverlay extends StatefulWidget {
   final Widget child;
   final ValueListenable<FingerprintSettings?> fingerprintListenable;
   final ValueListenable<MessageSettings?> messageListenable;
-  final ValueListenable<String> deviceIdListenable;
+  final ValueListenable<String> fingerprintIdListenable;
   final VoidCallback? onMessageExpired;
   final VoidCallback? onFingerprintExpired;
 
   const SigmaFPMOverlay({
     super.key,
-    required this.deviceIdListenable,
+    required this.fingerprintIdListenable,
     required this.fingerprintListenable,
     required this.messageListenable,
     required this.child,
@@ -96,11 +96,11 @@ class _SigmaFPMOverlayState extends State<SigmaFPMOverlay> {
             if (messageSettings == null) return const SizedBox.shrink();
 
             return ValueListenableBuilder<String>(
-              valueListenable: widget.deviceIdListenable,
-              builder: (_, deviceId, __) {
+              valueListenable: widget.fingerprintIdListenable,
+              builder: (_, fingerprintId, __) {
                 return MessageOverlay(
                   settings: messageSettings,
-                  deviceId: deviceId,
+                  fingerprintId: fingerprintId,
                 );
               },
             );
@@ -114,11 +114,11 @@ class _SigmaFPMOverlayState extends State<SigmaFPMOverlay> {
             if (fingerprintSettings == null) return const SizedBox.shrink();
 
             return ValueListenableBuilder<String>(
-              valueListenable: widget.deviceIdListenable,
-              builder: (_, deviceId, __) {
+              valueListenable: widget.fingerprintIdListenable,
+              builder: (_, fingerprintId, __) {
                 return FingerprintOverlay(
                   settings: fingerprintSettings,
-                  deviceId: deviceId,
+                  fingerprintId: fingerprintId,
                 );
               },
             );

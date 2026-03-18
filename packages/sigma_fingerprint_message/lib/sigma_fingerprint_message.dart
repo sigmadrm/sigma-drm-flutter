@@ -28,7 +28,7 @@ class SigmaFPM {
   // ================================
   // 3️⃣ NOTIFIERS (UI binding)
   // ================================
-  final ValueNotifier<String> deviceIdListenable = ValueNotifier('');
+  final ValueNotifier<String> fingerprintIdListenable = ValueNotifier('');
   final ValueNotifier<FingerprintSettings?> fingerprintListenable =
       ValueNotifier(null);
   final ValueNotifier<MessageSettings?> messageListenable = ValueNotifier(null);
@@ -56,8 +56,8 @@ class SigmaFPM {
     _apiClient.setAccessToken(_config['accessToken']);
   }
 
-  void setDeviceId(String? deviceId) {
-    deviceIdListenable.value = deviceId ?? "";
+  void setFingerprintId(String? fingerprintId) {
+    fingerprintIdListenable.value = fingerprintId ?? "";
   }
 
   void setChannelId(String channelId) {
@@ -104,7 +104,7 @@ class SigmaFPM {
 
   void dispose() {
     stop();
-    deviceIdListenable.dispose();
+    fingerprintIdListenable.dispose();
     fingerprintListenable.dispose();
     messageListenable.dispose();
   }
@@ -114,10 +114,10 @@ class SigmaFPM {
   // ================================
   Widget buildOverlay({required Widget child}) {
     debugPrint(
-      "[SigmaFPM] buildOverlay with deviceId=${deviceIdListenable.value}, fingerprints=${fingerprintListenable.value}, message=${messageListenable.value}",
+      "[SigmaFPM] buildOverlay with fingerprintId=${fingerprintIdListenable.value}, fingerprints=${fingerprintListenable.value}, message=${messageListenable.value}",
     );
     return SigmaFPMOverlay(
-      deviceIdListenable: deviceIdListenable,
+      fingerprintIdListenable: fingerprintIdListenable,
       fingerprintListenable: fingerprintListenable,
       messageListenable: messageListenable,
       onMessageExpired: () {

@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   final List<VideoConfig> _playlist = [
     VideoConfig(
       title: 'Channel title',
-      channelId: "channelId",
+      channelId: "100",
       url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
       drmConfiguration: {
         'merchantId': 'merchantId',

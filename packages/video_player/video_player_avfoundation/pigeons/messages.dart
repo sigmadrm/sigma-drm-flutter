@@ -26,7 +26,11 @@ class PlatformVideoViewCreationParams {
 }
 
 class CreationOptions {
-  CreationOptions({required this.uri, required this.httpHeaders, required this.drmConfiguration});
+  CreationOptions({
+    required this.uri,
+    required this.httpHeaders,
+    required this.drmConfiguration,
+  });
 
   String uri;
   Map<String, String> httpHeaders;
@@ -59,6 +63,10 @@ abstract class AVFoundationVideoPlayerApi {
   // This must be called after initialize().
   @ObjCSelector('getSigmaDeviceId')
   String getSigmaDeviceId();
+  // Gets the Sigma fingerprint ID from native SDK on iOS.
+  // This must be called after initialize().
+  @ObjCSelector('getFingerprintId')
+  String getFingerprintId();
 }
 
 @HostApi()

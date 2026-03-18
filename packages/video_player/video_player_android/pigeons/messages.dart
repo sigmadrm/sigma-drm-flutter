@@ -68,7 +68,11 @@ class PlatformVideoViewCreationParams {
 }
 
 class CreationOptions {
-  CreationOptions({required this.uri, required this.httpHeaders, required this.drmConfiguration});
+  CreationOptions({
+    required this.uri,
+    required this.httpHeaders,
+    required this.drmConfiguration,
+  });
   String uri;
   PlatformVideoFormat? formatHint;
   Map<String, String> httpHeaders;
@@ -163,6 +167,9 @@ abstract class AndroidVideoPlayerApi {
   // Gets the Sigma device ID from native SDK.
   // This must be called after initialize() to ensure SigmaHelper is ready.
   String getSigmaDeviceId();
+  // Gets the Sigma fingerprint ID from native SDK.
+  // This must be called after initialize() to ensure SigmaHelper is ready.
+  String getFingerprintId();
 }
 
 @HostApi()

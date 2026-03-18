@@ -23,9 +23,9 @@ class SigmaVideoPlayer {
       await VideoPlayerPlatform.instance.init();
 
       // Now we can safely get the device ID since SigmaHelper is initialized
-      final String deviceId = await getSigmaDeviceId();
-      debugPrint('[SigmaVideoPlayer] Auto-synced deviceId: $deviceId');
-      SigmaFPM.instance.setDeviceId(deviceId);
+      final String fingerprintId = await getFingerprintId();
+      debugPrint('[SigmaVideoPlayer] Auto-synced deviceId: $fingerprintId');
+      SigmaFPM.instance.setFingerprintId(fingerprintId);
     } catch (e) {
       debugPrint('[SigmaVideoPlayer] Failed to auto-sync deviceId: $e');
     }
@@ -42,6 +42,21 @@ class SigmaVideoPlayer {
       return await video_player.getSigmaDeviceId();
     } catch (e) {
       debugPrint('[SigmaVideoPlayer] Failed to get deviceId: $e');
+      return "";
+    }
+  }
+
+  /// Gets the fingerprint ID from the native SDK.
+  ///
+  /// This method retrieves the fingerprint ID from the video_player package,
+  /// which in turn calls the native implementation.
+  ///
+  /// IMPORTANT: This must be called after [init] to ensure the native SDK is ready.
+  static Future<String> getFingerprintId() async {
+    try {
+      return await video_player.getFingerprintId();
+    } catch (e) {
+      debugPrint('[SigmaVideoPlayer] Failed to get fingerprintId: $e');
       return "";
     }
   }

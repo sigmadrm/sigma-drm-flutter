@@ -57,7 +57,7 @@ android {
     }
 
     dependencies {
-        def sigmaPlayerVersion = "2.19.1.24"
+        def sigmaPlayerVersion = "2.19.1.25"
         implementation "com.sigma.drm:sigma-player-common:${sigmaPlayerVersion}"
         implementation "com.sigma.drm:sigma-player-container:${sigmaPlayerVersion}"
         implementation "com.sigma.drm:sigma-player-core:${sigmaPlayerVersion}"

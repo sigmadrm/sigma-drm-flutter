@@ -277,6 +277,15 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
     return await _api.getSigmaDeviceId();
   }
 
+  /// Gets the Sigma fingerprint ID from the native SDK.
+  ///
+  /// This method must be called after [init] to ensure SigmaHelper is properly initialized.
+  /// Returns the fingerprint ID string, or an empty string if there's an error.
+  @override
+  Future<String> getFingerprintId() async {
+    return await _api.getFingerprintId();
+  }
+
   _PlayerInstance _playerWith({required int id}) {
     final _PlayerInstance? player = _players[id];
     return player ?? (throw StateError('No active player with ID $id.'));

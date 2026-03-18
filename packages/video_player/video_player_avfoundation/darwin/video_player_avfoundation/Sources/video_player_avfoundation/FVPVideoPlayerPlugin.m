@@ -269,6 +269,13 @@ static void upgradeAudioSessionCategory(AVAudioSessionCategory requestedCategory
   return @"sigma_device_id";
 }
 
+- (nullable NSString *)getFingerprintIdWithError:(FlutterError *_Nullable *_Nonnull)error {
+  // TODO: Implement fingerprint ID retrieval for iOS
+  // This should integrate with the iOS Sigma DRM SDK when available
+  NSLog(@"[FVPVideoPlayerPlugin] getFingerprintId not yet implemented for iOS");
+  return @"";
+}
+
 /// Returns the AVPlayerItem corresponding to the given player creation options.
 - (nonnull AVPlayerItem *)playerItemWithCreationOptions:(nonnull FVPCreationOptions *)options {
   NSDictionary<NSString *, NSString *> *headers = options.httpHeaders;

@@ -5,19 +5,19 @@ import '../utils/color.dart';
 
 class MessageOverlay extends StatelessWidget {
   final MessageSettings settings;
-  final String deviceId;
+  final String fingerprintId;
 
   const MessageOverlay({
     super.key,
     required this.settings,
-    required this.deviceId,
+    required this.fingerprintId,
   });
 
   @override
   Widget build(BuildContext context) {
     bool useRtlText = false;
     String rawMessage = settings.outputType == MessageOutputType.FORCE_FP
-        ? "$deviceId ${settings.body}"
+        ? "$fingerprintId ${settings.body}"
         : settings.body;
     // Calculate text height based on fontSize and lineHeight
     final double lineHeight = 1.5;
@@ -82,7 +82,7 @@ class MessageOverlay extends StatelessWidget {
               vertical: innerVerticalPadding,
             ),
             decoration: BoxDecoration(
-              color: parseColor(settings.bgColor).withValues(alpha: 1),
+              color: parseColor(settings.bgColor).withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(borderRadius),
             ),
             child: LayoutBuilder(

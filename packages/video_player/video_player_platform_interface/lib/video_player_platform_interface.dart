@@ -159,6 +159,15 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('getSigmaDeviceId() has not been implemented.');
   }
 
+  /// Gets the Sigma fingerprint ID from the native SDK.
+  ///
+  /// This method must be called after the plugin has been initialized.
+  /// Returns the fingerprint ID string, or an empty string if there's an error or
+  /// the platform doesn't support this feature.
+  Future<String> getFingerprintId() {
+    throw UnimplementedError('getFingerprintId() has not been implemented.');
+  }
+
   bool isAudioTrackSupportAvailable() {
     return false;
   }

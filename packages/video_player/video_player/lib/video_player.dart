@@ -1254,3 +1254,23 @@ Future<String> getSigmaDeviceId() async {
     return '';
   }
 }
+
+/// Gets the fingerprint ID from the native SDK.
+///
+/// This function must be called after the video player platform has been initialized
+/// (i.e., after calling [VideoPlayerPlatform.instance.init()]).
+///
+/// On Android, this retrieves the fingerprint ID from the Sigma DRM SDK.
+/// On iOS, this is not yet implemented and returns an empty string with a debug log.
+/// On other platforms, returns an empty string.
+///
+/// Returns the fingerprint ID string, or an empty string if there's an error or
+/// the platform doesn't support this feature.
+Future<String> getFingerprintId() async {
+  try {
+    return await _videoPlayerPlatform.getFingerprintId();
+  } catch (e) {
+    debugPrint('[getFingerprintId] Error: $e');
+    return '';
+  }
+}

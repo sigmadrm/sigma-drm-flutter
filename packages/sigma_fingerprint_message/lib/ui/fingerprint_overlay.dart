@@ -7,12 +7,12 @@ import '../utils/offset.dart';
 
 class FingerprintOverlay extends StatefulWidget {
   final FingerprintSettings settings;
-  final String deviceId;
+  final String fingerprintId;
 
   const FingerprintOverlay({
     super.key,
     required this.settings,
-    required this.deviceId,
+    required this.fingerprintId,
   });
 
   @override
@@ -145,7 +145,7 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
     if (showDeviceId) {
       lines.add(
         _FPLine(
-          widget.deviceId,
+          widget.fingerprintId,
           baseStyle.copyWith(fontWeight: FontWeight.w400),
         ),
       );

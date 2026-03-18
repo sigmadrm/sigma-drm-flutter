@@ -58,6 +58,8 @@ NSObject<FlutterMessageCodec> *FVPGetMessagesCodec(void);
 - (nullable NSString *)fileURLForAssetWithName:(NSString *)asset package:(nullable NSString *)package error:(FlutterError *_Nullable *_Nonnull)error;
 /// @return `nil` only when `error != nil`.
 - (nullable NSString *)getSigmaDeviceId:(FlutterError *_Nullable *_Nonnull)error;
+/// @return `nil` only when `error != nil`.
+- (nullable NSString *)getFingerprintId:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void SetUpFVPAVFoundationVideoPlayerApi(id<FlutterBinaryMessenger> binaryMessenger, NSObject<FVPAVFoundationVideoPlayerApi> *_Nullable api);

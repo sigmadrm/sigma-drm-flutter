@@ -52,6 +52,14 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
     return await _api.getSigmaDeviceId();
   }
 
+  /// Gets the Sigma fingerprint ID from the native SDK.
+  ///
+  /// This method must be called after [init].
+  @override
+  Future<String> getFingerprintId() async {
+    return await _api.getFingerprintId();
+  }
+
   @override
   Future<void> dispose(int playerId) async {
     final _PlayerInstance? player = _players.remove(playerId);

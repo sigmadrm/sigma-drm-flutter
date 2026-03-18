@@ -213,17 +213,21 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   @Override
   public @NonNull String getSigmaDeviceId() {
     try {
-      // SigmaHelper.init() is already called in initialize() method
-      String macAddress = com.sigma.drm.NativeHelper.getMacAddress();
-      String androidId = com.sigma.drm.NativeHelper.getDeviceId();
-      
-      // Use androidId if macAddress is the default value
-      String deviceId = "02:00:00:00:00:00".equals(macAddress) ? androidId : macAddress;
-      
-      Log.d(TAG, "getSigmaDeviceId: " + deviceId);
+      String deviceId = com.sigma.drm.NativeHelper.getSigmaDeviceId();
       return deviceId != null ? deviceId : "";
     } catch (Exception e) {
       Log.e(TAG, "Error getting Sigma device ID", e);
+      return "";
+    }
+  }
+
+  @Override
+  public @NonNull String getFingerprintId() {
+    try {
+      String fingerprintId = com.sigma.drm.NativeHelper.getFingerprintId();
+      return fingerprintId != null ? fingerprintId : "";
+    } catch (Exception e) {
+      Log.e(TAG, "Error getting fingerprint ID", e);
       return "";
     }
   }
