@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import '../models/fingerprint_settings.dart';
 import '../utils/color.dart';
@@ -189,8 +190,8 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
         // ---------- MEASURE REAL SIZE ----------
 
         const double lineSpacing = 2;
-        const double hPad = 8;
-        const double vPad = 4;
+        const double hPad = 6;
+        const double vPad = 2;
 
         double maxLineWidth = 0;
         double totalHeight = 0;
@@ -268,7 +269,10 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
                           vertical: vPad,
                         ),
                         decoration: decoration,
-                        child: Text(lines[i].text, style: lines[i].style),
+                        child: Opacity(
+                          opacity: settings.opacity,
+                          child: Text(lines[i].text, style: lines[i].style),
+                        ),
                       ),
                     );
                   }),
