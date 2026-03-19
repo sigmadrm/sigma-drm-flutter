@@ -21,7 +21,9 @@ class MessageOverlay extends StatelessWidget {
         : settings.body;
     // Calculate text height based on fontSize and lineHeight
     final double lineHeight = 1.5;
-    final double fontSize = settings.fontSize.toDouble();
+    final mediaQuery = MediaQuery.of(context);
+    final double devicePixelRatio = mediaQuery.devicePixelRatio;
+    final double fontSize = settings.fontSize / devicePixelRatio;
     final double textHeight = fontSize * lineHeight;
     final textStyle = TextStyle(
       color: parseColor(settings.textColor),
@@ -38,8 +40,8 @@ class MessageOverlay extends StatelessWidget {
     );
 
     // Responsive padding based on device type
-    final mediaQuery = MediaQuery.of(context);
     final screenWidth = mediaQuery.size.width;
+
     final EdgeInsets responsivePadding;
     if (screenWidth < 600) {
       // Mobile: reduce by 4x

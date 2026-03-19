@@ -32,6 +32,12 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _stopDisplayCycle();
     _startDisplayCycle();
   }
 
@@ -64,10 +70,11 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
       if (widget.settings.displayAt == FPDisplayAtType.AT_AUTO) {
         _runOvertAutoCycle();
       } else {
+        final dpr = View.of(context).devicePixelRatio;
         setState(() {
           _isVisible = true;
-          _left = widget.settings.settings.px.toDouble();
-          _top = widget.settings.settings.py.toDouble();
+          _left = widget.settings.settings.px / dpr;
+          _top = widget.settings.settings.py / dpr;
           _needsRandomize = false;
         });
       }
@@ -125,7 +132,7 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
 
     final baseStyle = TextStyle(
       color: parseColor(style.textColor),
-      fontSize: style.fontSize.toDouble(),
+      fontSize: style.fontSize / MediaQuery.of(context).devicePixelRatio,
       fontWeight: FontWeight.w600,
       height: 1.2,
       decoration: TextDecoration.none,
