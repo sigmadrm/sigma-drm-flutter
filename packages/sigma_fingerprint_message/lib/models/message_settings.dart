@@ -1,30 +1,33 @@
+import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import '../utils/color.dart';
 
-enum MessageOutputType {
+enum SmMessageOutputType {
   MESSAGE(0),
   FORCE_FP(1);
 
   final int value;
-  const MessageOutputType(this.value);
+  const SmMessageOutputType(this.value);
 
-  static MessageOutputType fromValue(int value) {
-    return MessageOutputType.values.firstWhere(
+  static SmMessageOutputType fromValue(int value) {
+    return SmMessageOutputType.values.firstWhere(
       (e) => e.value == value,
-      orElse: () => MessageOutputType.MESSAGE,
+      orElse: () => SmMessageOutputType.MESSAGE,
     );
   }
 }
 
-class MessageSettings {
+class SmMessageSettings {
   final String id;
-  final String bgColor;
+  final Color bgColor;
   final String body;
   final int duration;
-  final int fontSize;
-  final MessageOutputType outputType;
-  final String textColor;
+  final double fontSize;
+  final SmMessageOutputType outputType;
+  final Color textColor;
 
-  MessageSettings({
+  SmMessageSettings({
     required this.id,
     required this.bgColor,
     required this.body,
@@ -34,7 +37,7 @@ class MessageSettings {
     required this.textColor,
   });
 
-  bool equals(MessageSettings? other) {
+  bool equals(SmMessageSettings? other) {
     if (other == null) return false;
 
     return id == other.id &&
@@ -46,18 +49,24 @@ class MessageSettings {
         textColor == other.textColor;
   }
 
-  static MessageSettings? fromJson(Map<String, dynamic>? json) {
-    debugPrint("MessageSettings from json = $json");
+  static SmMessageSettings? fromJson(Map<String, dynamic>? json) {
+    debugPrint("SmMessageSettings from json = $json");
     if (json == null) return null;
 
-    return MessageSettings(
+    // Determine devicePixelRatio to convert physical pixels from backend to logical pixels
+    double dpr = 1.0;
+    try {
+      dpr = ui.PlatformDispatcher.instance.views.first.devicePixelRatio;
+    } catch (_) {}
+
+    return SmMessageSettings(
       id: json['id'] ?? '',
-      bgColor: json['bgColor'] ?? '#FFFFFF',
+      bgColor: smParseColor(json['bgColor'] ?? '#FFFFFF', Colors.white),
       body: json['body'] ?? '',
       duration: json['duration'] ?? 0,
-      fontSize: json['fontSize'] ?? 14,
-      outputType: MessageOutputType.fromValue(json['outputType'] ?? 0),
-      textColor: json['textColor'] ?? '#000000',
+      fontSize: (json['fontSize'] ?? 14) / dpr,
+      outputType: SmMessageOutputType.fromValue(json['outputType'] ?? 0),
+      textColor: smParseColor(json['textColor'] ?? '#000000', Colors.black),
     );
   }
 }

@@ -8,11 +8,16 @@ import 'message_overlay.dart';
 
 class SigmaFPMOverlay extends StatefulWidget {
   final Widget child;
-  final ValueListenable<FingerprintSettings?> fingerprintListenable;
-  final ValueListenable<MessageSettings?> messageListenable;
+  final ValueListenable<SmFingerprintSettings?> fingerprintListenable;
+  final ValueListenable<SmMessageSettings?> messageListenable;
   final ValueListenable<String> fingerprintIdListenable;
   final VoidCallback? onMessageExpired;
   final VoidCallback? onFingerprintExpired;
+
+  /// If provided, the SDK will NOT render the default [FingerprintOverlay].
+  /// This builder is called whenever [SmFingerprintSettings] or [fingerprintId]
+  /// changes, and the returned [Widget] is displayed in its place.
+  final SmFingerprintWidgetBuilder? fingerprintWidgetBuilder;
 
   const SigmaFPMOverlay({
     super.key,
@@ -22,6 +27,7 @@ class SigmaFPMOverlay extends StatefulWidget {
     required this.child,
     this.onMessageExpired,
     this.onFingerprintExpired,
+    this.fingerprintWidgetBuilder,
   });
 
   @override
@@ -90,7 +96,7 @@ class _SigmaFPMOverlayState extends State<SigmaFPMOverlay> {
         widget.child,
 
         // Layer 1 — Message overlay (rebuild when message OR deviceId changes)
-        ValueListenableBuilder<MessageSettings?>(
+        ValueListenableBuilder<SmMessageSettings?>(
           valueListenable: widget.messageListenable,
           builder: (_, messageSettings, __) {
             if (messageSettings == null) return const SizedBox.shrink();
@@ -107,8 +113,8 @@ class _SigmaFPMOverlayState extends State<SigmaFPMOverlay> {
           },
         ),
 
-        // Layer 2 — Fingerprint overlay (rebuild when fingerprint OR deviceId changes)
-        ValueListenableBuilder<FingerprintSettings?>(
+        // Layer 2 — Fingerprint overlay
+        ValueListenableBuilder<SmFingerprintSettings?>(
           valueListenable: widget.fingerprintListenable,
           builder: (_, fingerprintSettings, __) {
             if (fingerprintSettings == null) return const SizedBox.shrink();
@@ -116,6 +122,14 @@ class _SigmaFPMOverlayState extends State<SigmaFPMOverlay> {
             return ValueListenableBuilder<String>(
               valueListenable: widget.fingerprintIdListenable,
               builder: (_, fingerprintId, __) {
+                // If the host app provided a builder → use its widget
+                if (widget.fingerprintWidgetBuilder != null) {
+                  return widget.fingerprintWidgetBuilder!(
+                    fingerprintSettings,
+                    fingerprintId,
+                  );
+                }
+                // No builder provided → use the SDK default overlay
                 return FingerprintOverlay(
                   settings: fingerprintSettings,
                   fingerprintId: fingerprintId,

@@ -5,6 +5,12 @@ import 'models/message_settings.dart';
 import 'api/api_client.dart';
 import 'ui/fingerprint_message_overlay.dart';
 
+// Re-export public model types so consumers can reference them without
+// importing internal paths (e.g. SmFingerprintSettings, SmFingerprintWidgetBuilder,
+// SmFPOutputType, SmFPDisplayType, SmFPDisplayAtType, SmFingerprintStyleSettings).
+export 'models/fingerprint_settings.dart';
+export 'utils/color.dart';
+
 class SigmaFPM {
   static final SigmaFPM instance = SigmaFPM._internal();
 
@@ -22,16 +28,18 @@ class SigmaFPM {
   };
 
   Timer? _refreshTimer;
-  FingerprintSettings? _lastFingerprint;
-  MessageSettings? _lastMessage;
+  SmFingerprintSettings? _lastFingerprint;
+  SmMessageSettings? _lastMessage;
 
   // ================================
   // 3️⃣ NOTIFIERS (UI binding)
   // ================================
   final ValueNotifier<String> fingerprintIdListenable = ValueNotifier('');
-  final ValueNotifier<FingerprintSettings?> fingerprintListenable =
+  final ValueNotifier<SmFingerprintSettings?> fingerprintListenable =
       ValueNotifier(null);
-  final ValueNotifier<MessageSettings?> messageListenable = ValueNotifier(null);
+  final ValueNotifier<SmMessageSettings?> messageListenable = ValueNotifier(
+    null,
+  );
 
   // ================================
   // 4️⃣ CONFIG
@@ -64,7 +72,8 @@ class SigmaFPM {
     if (_channelId == channelId) return;
     _channelId = channelId;
 
-    if (fingerprintListenable.value?.displayType == FPDisplayType.INDIVIDUAL) {
+    if (fingerprintListenable.value?.displayType ==
+        SmFPDisplayType.INDIVIDUAL) {
       fingerprintListenable.value = null;
       _lastFingerprint = null;
       _fetchFingerprintMessage();
@@ -112,7 +121,17 @@ class SigmaFPM {
   // ================================
   // 6️⃣ UI OVERLAY
   // ================================
-  Widget buildOverlay({required Widget child}) {
+
+  /// Wraps [child] with the SDK's fingerprint and message overlays.
+  ///
+  /// If [fingerprintWidgetBuilder] is provided, the SDK will NOT render the
+  /// default [FingerprintOverlay]. Instead, the builder is invoked whenever
+  /// [SmFingerprintSettings] or [fingerprintId] changes, and the returned
+  /// [Widget] is displayed in its place.
+  Widget buildOverlay({
+    required Widget child,
+    SmFingerprintWidgetBuilder? fingerprintWidgetBuilder,
+  }) {
     debugPrint(
       "[SigmaFPM] buildOverlay with fingerprintId=${fingerprintIdListenable.value}, fingerprints=${fingerprintListenable.value}, message=${messageListenable.value}",
     );
@@ -120,6 +139,7 @@ class SigmaFPM {
       fingerprintIdListenable: fingerprintIdListenable,
       fingerprintListenable: fingerprintListenable,
       messageListenable: messageListenable,
+      fingerprintWidgetBuilder: fingerprintWidgetBuilder,
       onMessageExpired: () {
         messageListenable.value = null;
       },
@@ -157,7 +177,7 @@ class SigmaFPM {
     }
   }
 
-  void _updateFingerprintSetting(FingerprintSettings? settings) {
+  void _updateFingerprintSetting(SmFingerprintSettings? settings) {
     if (settings == null) {
       fingerprintListenable.value = null;
     } else if (_lastFingerprint?.equals(settings) != true) {
@@ -171,7 +191,7 @@ class SigmaFPM {
     _lastFingerprint = settings; // save value for next comparison
   }
 
-  void _updateMessageSetting(MessageSettings? settings) {
+  void _updateMessageSetting(SmMessageSettings? settings) {
     if (settings == null) {
       messageListenable.value = null;
     } else if (_lastMessage?.equals(settings) != true) {

@@ -7,3 +7,12 @@ Color parseColor(String hexColor) {
   }
   return Color(int.parse(hexColor, radix: 16));
 }
+
+Color smParseColor(String hexColor, [Color fallback = Colors.white]) {
+  try {
+    String hex = hexColor.replaceAll('#', '');
+    if (hex.length == 6) hex = 'FF$hex';
+    if (hex.length == 8) return Color(int.parse(hex, radix: 16));
+  } catch (_) {}
+  return fallback;
+}

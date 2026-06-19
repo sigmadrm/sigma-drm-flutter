@@ -31,7 +31,7 @@ dependencies:
   sigma_video_player:
     git:
       url: https://github.com/sigmadrm/sigma-drm-flutter.git
-      ref: v1.1.1 # Replace with the latest version
+      ref: v1.2.0 # Replace with the latest version
 ```
 
 Install dependencies:
@@ -119,7 +119,94 @@ Widget build(BuildContext context) {
 
 ---
 
-### 4️⃣ DRM Video Playback
+### 4️⃣ Custom Fingerprint UI (Optional)
+
+By default, the SDK provides a built-in Fingerprint overlay that strictly follows the CMS settings (including positioning, text size, opacity, and color). However, you can provide a **Custom Fingerprint Builder** to fully control the layout (e.g., adding an icon, a border, or changing the position) while still utilizing the pre-computed CMS styles.
+
+When building a custom Fingerprint widget, the SDK provides `SmFingerprintSettings` (containing all style properties) and the `fingerprintId` string.
+
+**1. Define your custom builder:**
+```dart
+import 'package:flutter/material.dart';
+import 'package:sigma_video_player/sigma_video_player.dart';
+
+Widget customFingerprintBuilder(
+  SmFingerprintSettings settings,
+  String fingerprintId,
+) {
+  final style = settings.settings;
+  return Positioned(
+    // App controls the absolute positioning (ignores CMS offset x/y)
+    bottom: 32,
+    right: 16,
+    child: Opacity(
+      opacity: settings.opacity,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: style.bgColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: style.textColor.withOpacity(0.5),
+            width: 1.0,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (settings.message.isNotEmpty)
+              Text(
+                settings.message,
+                style: TextStyle(
+                  color: style.textColor,
+                  fontSize: style.fontSize,
+                  fontWeight: FontWeight.w600,
+                  decoration: TextDecoration.none,
+                  inherit: false,
+                ),
+              ),
+            if (settings.showDeviceId)
+              Text(
+                fingerprintId,
+                style: TextStyle(
+                  color: style.textColor,
+                  fontSize: style.fontSize,
+                  fontWeight: FontWeight.w400,
+                  decoration: TextDecoration.none,
+                  inherit: false,
+                ),
+              ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+```
+
+**2. Pass the custom builder to `buildOverlay`:**
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    builder: (context, child) {
+      return SigmaFPM.instance.buildOverlay(
+        customFingerprintBuilder: customFingerprintBuilder, // Inject custom UI here
+        child: child ?? const SizedBox(),
+      );
+    },
+    home: const MyApp(),
+  );
+}
+```
+
+> **Note:** A stateless custom builder will bypass the SDK's automatic Overt/Forensic layout behaviors (like random periodic repositioning or forensic blinking). If your application requires those real-time behaviors within a custom layout, you must implement the state timer logic inside your custom widget wrapper.
+
+---
+
+### 5️⃣ DRM Video Playback
 
 Create a `VideoPlayerController` with DRM configuration.
 
@@ -140,7 +227,7 @@ controller.play();
 
 ---
 
-### 5️⃣ Update Channel ID When Switching Content
+### 6️⃣ Update Channel ID When Switching Content
 
 ```dart
 SigmaFPM.instance.setChannelId('YOUR_CHANNEL_ID');
@@ -148,7 +235,7 @@ SigmaFPM.instance.setChannelId('YOUR_CHANNEL_ID');
 
 ---
 
-### 6️⃣ Update Access Token Dynamically
+### 7️⃣ Update Access Token Dynamically
 
 If your application refreshes the authentication token during a session, you can update it without restarting the module.
 
@@ -158,7 +245,7 @@ SigmaFPM.instance.setAccessToken('YOUR_JWT_ACCESS_TOKEN');
 
 ---
 
-### 7️⃣ Get Sigma Device ID
+### 8️⃣ Get Sigma Device ID
 
 You can retrieve the unique device identifier used by SigmaDRM.
 

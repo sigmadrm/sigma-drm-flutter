@@ -3,11 +3,22 @@ import 'package:flutter/services.dart';
 
 import 'package:sigma_video_player/sigma_video_player.dart';
 
+import 'models/video_config.dart';
+import 'widgets/sm_button.dart';
+import 'widgets/custom_fingerprint_widget.dart';
+
 void main() {
   runApp(const App());
 }
 
-/// Root app
+// ---------------------------------------------------------------------------
+// Root app
+// ---------------------------------------------------------------------------
+
+/// Notifier that controls whether the custom fingerprint builder is active.
+/// Placed at the top level so [App] can rebuild [buildOverlay] when toggled.
+final ValueNotifier<bool> useCustomBuilderNotifier = ValueNotifier(false);
+
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -17,26 +28,22 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Sigma Player Demo',
       builder: (context, child) {
-        return SigmaFPM.instance.buildOverlay(child: child ?? const SizedBox());
+        // Rebuild the overlay wrapper whenever the toggle changes.
+        return ValueListenableBuilder<bool>(
+          valueListenable: useCustomBuilderNotifier,
+          builder: (_, useCustom, __) {
+            return SigmaFPM.instance.buildOverlay(
+              child: child ?? const SizedBox(),
+              fingerprintWidgetBuilder: useCustom
+                  ? customFingerprintBuilder
+                  : null,
+            );
+          },
+        );
       },
       home: const MyApp(),
     );
   }
-}
-
-/// Video configuration model
-class VideoConfig {
-  final String title;
-  final String url;
-  final Map<String, String> drmConfiguration;
-  final String channelId;
-
-  const VideoConfig({
-    required this.title,
-    required this.url,
-    required this.channelId,
-    this.drmConfiguration = const {},
-  });
 }
 
 /// My app
@@ -245,18 +252,35 @@ class _MyAppState extends State<MyApp> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          _chewieController?.enterFullScreen();
-                        },
-                        child: const Text('Fullscreen'),
+                      SmButton(
+                        label: 'Fullscreen',
+                        icon: Icons.fullscreen,
+                        onPressed: () => _chewieController?.enterFullScreen(),
                       ),
 
-                      const SizedBox(height: 8),
+                      const SizedBox(width: 8),
 
-                      ElevatedButton(
+                      SmButton(
+                        label: 'Next Video',
+                        icon: Icons.skip_next,
                         onPressed: _nextVideo,
-                        child: const Text('Next Video'),
+                      ),
+
+                      const SizedBox(width: 8),
+
+                      // Toggle between SDK default overlay and custom builder
+                      ValueListenableBuilder<bool>(
+                        valueListenable: useCustomBuilderNotifier,
+                        builder: (_, useCustom, __) {
+                          return SmButton(
+                            label: useCustom ? 'Custom FP UI' : 'Default FP UI',
+                            icon: useCustom ? Icons.brush : Icons.auto_fix_high,
+                            active: useCustom,
+                            onPressed: () {
+                              useCustomBuilderNotifier.value = !useCustom;
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),

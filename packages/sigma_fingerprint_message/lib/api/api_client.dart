@@ -32,27 +32,27 @@ class ApiClient {
       );
 
       // // FIXME: fake response
-      // MessageSettings messageSettings = MessageSettings(
+      // SmMessageSettings messageSettings = SmMessageSettings(
       //   bgColor: '#00FFFF',
       //   body: 'Hello, message! ${DateTime.now().toString().hashCode}',
       //   duration: 3,
       //   fontSize: 48,
       //   id: '1234567890',
-      //   outputType: MessageOutputType.FORCE_FP,
+      //   outputType: SmMessageOutputType.FORCE_FP,
       //   textColor: '#000000',
       // );
-      // FingerprintSettings fingerprintSettings = FingerprintSettings(
-      //   displayAt: FPDisplayAtType.AT_POSITION,
+      // SmFingerprintSettings fingerprintSettings = SmFingerprintSettings(
+      //   displayAt: SmFPDisplayAtType.AT_POSITION,
       //   displayMAC: false,
       //   duration: 3,
       //   interval: 3,
       //   message: 'Hello, fingerprint! ${DateTime.now().toString().hashCode}',
       //   opacity: 0.8,
-      //   outputType: FPOutputType.OVERT,
-      //   displayType: FPDisplayType.GLOBAL,
+      //   outputType: SmFPOutputType.OVERT,
+      //   displayType: SmFPDisplayType.GLOBAL,
       //   refreshInterval: 30,
       //   repeat: 0,
-      //   settings: FingerprintStyleSettings(
+      //   settings: SmFingerprintStyleSettings(
       //     bgColor: '#FFFFFF',
       //     displayBackground: false,
       //     fontSize: 14,
@@ -63,8 +63,10 @@ class ApiClient {
       // );
 
       return FPMSettingsResponse(
-        fingerprintSettings: FingerprintSettings.fromJson(data?["fingerprint"]),
-        messageSettings: MessageSettings.fromJson(data?["message"]),
+        fingerprintSettings: SmFingerprintSettings.fromJson(
+          data?["fingerprint"],
+        ),
+        messageSettings: SmMessageSettings.fromJson(data?["message"]),
       );
     } catch (e) {
       print('Error fetching message settings: $e');

@@ -24,7 +24,9 @@ class SigmaVideoPlayer {
 
       // Now we can safely get the device ID since SigmaHelper is initialized
       final String fingerprintId = await getFingerprintId();
-      debugPrint('[SigmaVideoPlayer] Auto-synced fingerprintId: $fingerprintId');
+      debugPrint(
+        '[SigmaVideoPlayer] Auto-synced fingerprintId: $fingerprintId',
+      );
       SigmaFPM.instance.setFingerprintId(fingerprintId);
     } catch (e) {
       debugPrint('[SigmaVideoPlayer] Failed to auto-sync fingerprintId: $e');

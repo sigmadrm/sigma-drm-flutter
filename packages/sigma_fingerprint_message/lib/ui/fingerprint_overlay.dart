@@ -7,7 +7,7 @@ import '../utils/color.dart';
 import '../utils/offset.dart';
 
 class FingerprintOverlay extends StatefulWidget {
-  final FingerprintSettings settings;
+  final SmFingerprintSettings settings;
   final String fingerprintId;
 
   const FingerprintOverlay({
@@ -63,19 +63,18 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
   }
 
   void _startDisplayCycle() {
-    final isForensic = widget.settings.outputType == FPOutputType.FORENSIC;
+    final isForensic = widget.settings.outputType == SmFPOutputType.FORENSIC;
 
     if (isForensic) {
       _runForensicCycle();
     } else {
-      if (widget.settings.displayAt == FPDisplayAtType.AT_AUTO) {
+      if (widget.settings.displayAt == SmFPDisplayAtType.AT_AUTO) {
         _runOvertAutoCycle();
       } else {
-        final dpr = View.of(context).devicePixelRatio;
         setState(() {
           _isVisible = true;
-          _left = widget.settings.settings.px / dpr;
-          _top = widget.settings.settings.py / dpr;
+          _left = widget.settings.settings.px;
+          _top = widget.settings.settings.py;
           _needsRandomize = false;
         });
       }
@@ -132,8 +131,8 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
     // ---------- TEXT PREP ----------
 
     final baseStyle = TextStyle(
-      color: parseColor(style.textColor),
-      fontSize: style.fontSize / MediaQuery.of(context).devicePixelRatio,
+      color: style.textColor,
+      fontSize: style.fontSize,
       fontWeight: FontWeight.w600,
       height: 1.2,
       decoration: TextDecoration.none,
@@ -146,11 +145,7 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
       lines.add(_FPLine(settings.message, baseStyle));
     }
 
-    final showDeviceId =
-        settings.outputType == FPOutputType.FORENSIC ||
-        (settings.outputType == FPOutputType.OVERT && settings.displayMAC);
-
-    if (showDeviceId) {
+    if (settings.showDeviceId) {
       lines.add(
         _FPLine(
           widget.fingerprintId,
@@ -160,9 +155,7 @@ class _FingerprintOverlayState extends State<FingerprintOverlay> {
     }
 
     final decoration = BoxDecoration(
-      color: style.displayBackground
-          ? parseColor(style.bgColor)
-          : Colors.transparent,
+      color: style.bgColor,
     );
 
     return LayoutBuilder(
