@@ -193,7 +193,7 @@ Widget build(BuildContext context) {
   return MaterialApp(
     builder: (context, child) {
       return SigmaFPM.instance.buildOverlay(
-        customFingerprintBuilder: customFingerprintBuilder, // Inject custom UI here
+        fingerprintWidgetBuilder: customFingerprintBuilder, // Inject custom UI here
         child: child ?? const SizedBox(),
       );
     },
